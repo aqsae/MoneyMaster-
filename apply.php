@@ -28,7 +28,7 @@
 </head>
 
     <body>
-        <?php include 'header.inc'; ?> ; new
+        <?php include 'header.inc'; ?>  
 
         <main>
             <br>
@@ -37,7 +37,7 @@
             </p>
 
             <section>
-                <form action="https://mercury.swin.edu.au/it000000/formtest.php" method="POST">
+                <form action="process_eoi.php" method="POST">
 
                     <h2>Job Details</h2>
 
@@ -125,27 +125,27 @@
                     <fieldset>
                         <legend>Skill list</legend>
                         <p>
-                            <input type="checkbox" id="skillbudgeting" name="skills" value="budgeting-tools">
+                            <input type="checkbox" id="skillbudgeting" name="skills[]" value="budgeting-tools">
                             <label for="skillbudgeting">Budgeting tools development</label>
                         </p>
                         <p>
-                            <input type="checkbox" id="skillpayments" name="skills" value="digital-payments">
+                            <input type="checkbox" id="skillpayments" name="skills[]" value="digital-payments">
                             <label for="skillpayments">Digital payments systems</label>
                         </p>
                         <p>
-                            <input type="checkbox" id="skillsecurity" name="skills" value="financial-security">
+                            <input type="checkbox" id="skillsecurity" name="skills[]" value="financial-security">
                             <label for="skillsecurity">Financial data security</label>
                         </p>
                         <p>
-                            <input type="checkbox" id="skillanalysis" name="skills" value="financial-analysis">
+                            <input type="checkbox" id="skillanalysis" name="skills[]" value="financial-analysis">
                             <label for="skillanalysis">Financial analysis</label>
                         </p>
                         <p>
-                            <input type="checkbox" id="skillcustomer" name="skills" value="customer-service">
+                            <input type="checkbox" id="skillcustomer" name="skills[]" value="customer-service">
                             <label for="skillcustomer">Customer service</label>
                         </p>
                         <p>
-                            <input type="checkbox" id="skillcoding" name="skills" value="software-development">
+                            <input type="checkbox" id="skillcoding" name="skills[]" value="software-development">
                             <label for="skillcoding">Software development</label>
                         </p>
                     </fieldset>
@@ -167,6 +167,6 @@
             </section>
         </main>
 
-        <?php include 'footer.inc'; ?> ;new
+        <?php include 'footer.inc'; ?> 
     </body>
 </html>
