@@ -221,3 +221,35 @@ if (!mysqli_query($conn, $create_table)) {
     <meta name="author" content="MoneyMaster Executive Team">
     <title>MoneyMaster - Application</title>
 </head>
+
+<body>
+    <?php include 'header.inc'; ?>
+
+    <main>
+        <br>
+        <?php if ($eoi_number > 0) { ?>
+            <h1>Application Received</h1>
+            <section>
+                <p>Thank you, <?php echo $firstname; ?>. Your application for job <?php echo $jobref; ?> has been submitted.</p>
+                <p>Your Expression of Interest number is <strong><?php echo $eoi_number; ?></strong>. Please keep it for your records.</p>
+                <p><a href="index.php">Back to Home</a></p>
+            </section>
+        <?php } elseif ($db_error != "") { ?>
+            <h1>Something Went Wrong</h1>
+            <section>
+                <p><?php echo $db_error; ?> Please try again later.</p>
+                <p><a href="apply.php">Back to the application form</a></p>
+            </section>
+        <?php } else { ?>
+            <h1>Please Fix the Following</h1>
+            <section>
+                <ul>
+                    <?php foreach ($errors as $error) { echo "<li>$error</li>"; } ?>
+                </ul>
+                <p><a href="apply.php">Back to the application form</a></p>
+            </section>
+        <?php } ?>
+    </main>
+    <?php include 'footer.inc'; ?>
+</body>
+</html>
