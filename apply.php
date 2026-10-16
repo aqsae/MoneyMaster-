@@ -28,7 +28,7 @@
 </head>
 
     <body>
-        <?php include 'header.inc'; ?>  
+        <?php include 'header.inc'; /* shared header and nav bar, reused on every page */ ?>  
 
         <main>
             <br>
@@ -148,6 +148,7 @@
                             <input type="checkbox" id="skillcoding" name="skills[]" value="software-development">
                             <label for="skillcoding">Software development</label>
                         </p>
+                        <!-- skills[] sends every ticked box to process_eoi.php as a list, not just the last one -->
                     </fieldset>
 
                     <h3>Other skills:</h3>
@@ -167,6 +168,6 @@
             </section>
         </main>
 
-        <?php include 'footer.inc'; ?> 
+        <?php include 'footer.inc'; /* shared footer, reused on every page */ ?>
     </body>
 </html>
