@@ -103,4 +103,27 @@ if (!$conn) {
         $types .= "s";
         $params[] = "%" . $search_last . "%";
     }
+
+    if (count($conditions) > 0) {
+        $sql .= " WHERE " . implode(" AND ", $conditions);
+    }
+    $sql .= " ORDER BY $sort $order";
+
+    $stmt = mysqli_prepare($conn, $sql);
+    if (!$stmt) {
+        $db_error = "The EOI table does not exist yet. Submit an application first.";
+    } else {
+        if ($types != "") {
+            mysqli_stmt_bind_param($stmt, $types, ...$params);
+        }
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        while ($row = mysqli_fetch_assoc($result)) {
+            $results[] = $row;
+        }
+        mysqli_stmt_close($stmt);
+    }
+
+    mysqli_close($conn);
+}
 ?>
