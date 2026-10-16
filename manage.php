@@ -158,114 +158,116 @@ if (!$conn) {
             <?php } ?>
 
             <section>
-            <h2>Find EOIs</h2>
-            <form action="manage.php" method="GET">
-                <div class="form-row">
-                    <div>
-                        <label for="jobref">Job reference</label>
-                        <input type="text" id="jobref" name="jobref" maxlength="6" value="<?php echo e($search_jobref); ?>">
+                <h2>Find EOIs</h2>
+                <form action="manage.php" method="GET">
+                    <div class="form-row">
+                        <div>
+                            <label for="jobref">Job reference</label>
+                            <input type="text" id="jobref" name="jobref" maxlength="6" value="<?php echo e($search_jobref); ?>">
+                        </div>
+                        <div>
+                            <label for="firstname">First name</label>
+                            <input type="text" id="firstname" name="firstname" maxlength="20" value="<?php echo e($search_first); ?>">
+                        </div>
+                        <div>
+                            <label for="lastname">Last name</label>
+                            <input type="text" id="lastname" name="lastname" maxlength="20" value="<?php echo e($search_last); ?>">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div>
+                            <label for="sort">Sort by</label>
+                            <select id="sort" name="sort">
+                                <?php foreach ($sort_fields as $field => $label) { ?>
+                                    <option value="<?php echo $field; ?>" <?php if ($sort == $field) echo "selected"; ?>><?php echo $label; ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="order">Order</label>
+                            <select id="order" name="order">
+                                <option value="ASC" <?php if ($order == "ASC") echo "selected"; ?>>Ascending</option>
+                                <option value="DESC" <?php if ($order == "DESC") echo "selected"; ?>>Descending</option>
+                            </select>
+                        </div>
                     </div>
                     <div>
-                        <label for="firstname">First name</label>
-                        <input type="text" id="firstname" name="firstname" maxlength="20" value="<?php echo e($search_first); ?>">
+                        <button type="submit">Search</button>
+                        <a href="manage.php">List all EOIs</a>
                     </div>
-                    <div>
-                        <label for="lastname">Last name</label>
-                        <input type="text" id="lastname" name="lastname" maxlength="20" value="<?php echo e($search_last); ?>">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div>
-                        <label for="sort">Sort by</label>
-                        <select id="sort" name="sort">
-                            <?php foreach ($sort_fields as $field => $label) { ?>
-                                <option value="<?php echo $field; ?>" <?php if ($sort == $field) echo "selected"; ?>><?php echo $label; ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="order">Order</label>
-                        <select id="order" name="order">
-                            <option value="ASC" <?php if ($order == "ASC") echo "selected"; ?>>Ascending</option>
-                            <option value="DESC" <?php if ($order == "DESC") echo "selected"; ?>>Descending</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <button type="submit">Search</button>
-                    <a href="manage.php">List all EOIs</a>
-                </div>
-            </form>
-        </section>
+                </form>
+            </section>
             
-        <section>
-            <h2>Delete EOIs by Job Reference</h2>
-            <form action="manage.php" method="POST" onsubmit="return confirm('Delete ALL EOIs for this job reference?');">
-                <input type="hidden" name="action" value="delete">
-                <label for="delete_jobref">Job reference</label>
-                <input type="text" id="delete_jobref" name="delete_jobref" maxlength="6">
-                <div>
-                    <button type="submit">Delete EOIs</button>
-                </div>
-            </form>
-        </section>
-        <section>
-            <h2>Results (<?php echo count($results); ?>)</h2>
-
-            <?php if ($db_error != "") { ?>
-                <div class="manage-message"><?php echo $db_error; ?></div>
-            <?php } elseif (count($results) == 0) { ?>
-                <div class="manage-message">No EOIs found.</div>
-            <?php } else { ?>
-                <div class="manage-table-wrap">
-                    <table class="manage-table">
-                        <thead>
-                            <tr>
-                                <th>EOI #</th>
-                                <th>Job ref</th>
-                                <th>Name</th>
-                                <th>DOB</th>
-                                <th>Gender</th>
-                                <th>Address</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Skills</th>
-                                <th>Other skills</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($results as $row) { ?>
+            <section>
+                <h2>Delete EOIs by Job Reference</h2>
+                <form action="manage.php" method="POST" onsubmit="return confirm('Delete ALL EOIs for this job reference?');">
+                    <input type="hidden" name="action" value="delete">
+                    <label for="delete_jobref">Job reference</label>
+                    <input type="text" id="delete_jobref" name="delete_jobref" maxlength="6">
+                    <div>
+                        <button type="submit">Delete EOIs</button>
+                    </div>
+                </form>
+            </section>
+            
+            <section>
+                <h2>Results (<?php echo count($results); ?>)</h2>
+    
+                <?php if ($db_error != "") { ?>
+                    <div class="manage-message"><?php echo $db_error; ?></div>
+                <?php } elseif (count($results) == 0) { ?>
+                    <div class="manage-message">No EOIs found.</div>
+                <?php } else { ?>
+                    <div class="manage-table-wrap">
+                        <table class="manage-table">
+                            <thead>
                                 <tr>
-                                    <td><?php echo e($row["EOInumber"]); ?></td>
-                                    <td><?php echo e($row["job_ref"]); ?></td>
-                                    <td><?php echo e($row["first_name"] . " " . $row["last_name"]); ?></td>
-                                    <td><?php echo e($row["dob"]); ?></td>
-                                    <td><?php echo e($row["gender"]); ?></td>
-                                    <td><?php echo e($row["street_address"] . ", " . $row["suburb"] . " " . $row["state"] . " " . $row["postcode"]); ?></td>
-                                    <td><?php echo e($row["email"]); ?></td>
-                                    <td><?php echo e($row["phone"]); ?></td>
-                                    <td><?php echo e($row["skills"]); ?></td>
-                                    <td><?php echo e($row["other_skills"]); ?></td>
-                                    <td>
-                                        <form action="manage.php?<?php echo e($_SERVER["QUERY_STRING"]); ?>" method="POST">
-                                            <input type="hidden" name="action" value="status">
-                                            <input type="hidden" name="eoi_number" value="<?php echo e($row["EOInumber"]); ?>">
-                                            <select name="new_status" aria-label="Status for EOI <?php echo e($row["EOInumber"]); ?>">
-                                                <?php foreach ($statuses as $status) { ?>
-                                                    <option value="<?php echo $status; ?>" <?php if ($row["status"] == $status) echo "selected"; ?>><?php echo $status; ?></option>
-                                                <?php } ?>
-                                            </select>
-                                            <button type="submit">Update</button>
-                                        </form>
-                                    </td>
+                                    <th>EOI #</th>
+                                    <th>Job ref</th>
+                                    <th>Name</th>
+                                    <th>DOB</th>
+                                    <th>Gender</th>
+                                    <th>Address</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Skills</th>
+                                    <th>Other skills</th>
+                                    <th>Status</th>
                                 </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
-                </div>
-            <?php } ?>
-        </section>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($results as $row) { ?>
+                                    <tr>
+                                        <td><?php echo e($row["EOInumber"]); ?></td>
+                                        <td><?php echo e($row["job_ref"]); ?></td>
+                                        <td><?php echo e($row["first_name"] . " " . $row["last_name"]); ?></td>
+                                        <td><?php echo e($row["dob"]); ?></td>
+                                        <td><?php echo e($row["gender"]); ?></td>
+                                        <td><?php echo e($row["street_address"] . ", " . $row["suburb"] . " " . $row["state"] . " " . $row["postcode"]); ?></td>
+                                        <td><?php echo e($row["email"]); ?></td>
+                                        <td><?php echo e($row["phone"]); ?></td>
+                                        <td><?php echo e($row["skills"]); ?></td>
+                                        <td><?php echo e($row["other_skills"]); ?></td>
+                                        <td>
+                                            <form action="manage.php?<?php echo e($_SERVER["QUERY_STRING"]); ?>" method="POST">
+                                                <input type="hidden" name="action" value="status">
+                                                <input type="hidden" name="eoi_number" value="<?php echo e($row["EOInumber"]); ?>">
+                                                <select name="new_status" aria-label="Status for EOI <?php echo e($row["EOInumber"]); ?>">
+                                                    <?php foreach ($statuses as $status) { ?>
+                                                        <option value="<?php echo $status; ?>" <?php if ($row["status"] == $status) echo "selected"; ?>><?php echo $status; ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                                <button type="submit">Update</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php } ?>
+            </section>
         </main>
-    </body>
+     <?php include 'footer.inc'; ?>
+</body>
 </html>
