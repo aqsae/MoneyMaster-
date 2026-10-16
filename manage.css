@@ -1,0 +1,32 @@
+/* message box for results like EOI deleted */
+.manage-message {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--pale-green);
+    border-left: 5px solid var(--accent-color);
+}
+ 
+/* lets the table scroll sideways on small screens */
+.manage-table-wrap {
+    overflow-x: auto;
+}
+ 
+/* the results table */
+.manage-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--cream);
+}
+ 
+/* table headings and cells */
+.manage-table th,
+.manage-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--soft-green);
+}
+ 
+.manage-table th {
+    color: var(--cream);
+    background-color: var(--dark-green);
+}
