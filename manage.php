@@ -60,4 +60,28 @@ if (!$conn) {
                     }
                 }
             }
+        } elseif ($_POST["action"] == "status") {
+            $eoi_id     = isset($_POST["eoi_number"]) ? (int)$_POST["eoi_number"] : 0;
+            $new_status = isset($_POST["new_status"]) ? $_POST["new_status"] : "";
+
+            if ($eoi_id <= 0 || !in_array($new_status, $statuses)) {
+                $message = "Invalid status change.";
+            } else {
+                $stmt = mysqli_prepare($conn, "UPDATE eoi SET status = ? WHERE EOInumber = ?");
+                if (!$stmt) {
+                    $message = "The EOI table does not exist yet.";
+                } else {
+                    mysqli_stmt_bind_param($stmt, "si", $new_status, $eoi_id);
+                    mysqli_stmt_execute($stmt);
+                    $count = mysqli_stmt_affected_rows($stmt);
+                    mysqli_stmt_close($stmt);
+                    if ($count > 0) {
+                        $message = "EOI $eoi_id status changed to $new_status.";
+                    } else {
+                        $message = "EOI $eoi_id was not changed (it may already be $new_status).";
+                    }
+                }
+            }
+        }
+            
 ?>
