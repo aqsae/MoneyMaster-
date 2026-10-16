@@ -122,4 +122,23 @@ if ($email == "") {
 if (!preg_match("/^[0-9]{8,12}$/", $phone)) {
     $errors[] = "Phone number must be 8 to 12 digits.";
 }
+
+$valid_skills = array(
+    "budgeting-tools",
+    "digital-payments",
+    "financial-security",
+    "financial-analysis",
+    "customer-service",
+    "software-development"
+);
+foreach ($skills as $skill) {
+    if (!in_array($skill, $valid_skills)) {
+        $errors[] = "Invalid skill selected.";
+        break;
+    }
+}
+
+if (count($skills) == 0 && $otherskills == "") {
+    $errors[] = "Please select at least one skill or describe your other skills.";
+}
 ?>
