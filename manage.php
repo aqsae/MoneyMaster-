@@ -17,4 +17,13 @@ $conn = @mysqli_connect($host, $user, $pwd, $sql_db);
 $message = "";
 $db_error = "";
 $results = array();
+
+$sort_fields = array(
+    "EOInumber"  => "EOI number",
+    "job_ref"    => "Job reference",
+    "first_name" => "First name",
+    "last_name"  => "Last name",
+    "status"     => "Status"
+);
+$statuses = array("New", "Current", "Final");
 ?>
