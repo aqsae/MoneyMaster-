@@ -31,4 +31,10 @@ if (isset($_POST["skills"]) && is_array($_POST["skills"])) {
         $skills[] = sanitise_input($skill);
     }
 }
+
+$errors = array();
+ 
+if (!preg_match("/^[A-Za-z0-9]{6}$/", $jobref)) {
+    $errors[] = "Job reference number must be exactly 6 letters or numbers.";
+}
 ?>
