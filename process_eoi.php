@@ -141,4 +141,33 @@ foreach ($skills as $skill) {
 if (count($skills) == 0 && $otherskills == "") {
     $errors[] = "Please select at least one skill or describe your other skills.";
 }
+
+$eoi_number = 0;
+$db_error = "";
+
+if (count($errors) == 0) {
+    require_once "settings.php";
+    mysqli_report(MYSQLI_REPORT_OFF);
+    $conn = @mysqli_connect($host, $user, $pwd, $sql_db);
+
+    if (!$conn) {
+        $db_error = "Unable to connect to the database.";
+    } else {
+        $create_table = "CREATE TABLE IF NOT EXISTS eoi (
+            EOInumber INT AUTO_INCREMENT PRIMARY KEY,
+            job_ref VARCHAR(6) NOT NULL,
+            first_name VARCHAR(20) NOT NULL,
+            last_name VARCHAR(20) NOT NULL,
+            dob DATE NOT NULL,
+            gender VARCHAR(10) NOT NULL,
+            street_address VARCHAR(40) NOT NULL,
+            suburb VARCHAR(40) NOT NULL,
+            state VARCHAR(3) NOT NULL,
+            postcode CHAR(4) NOT NULL,
+            email VARCHAR(100) NOT NULL,
+            phone VARCHAR(12) NOT NULL,
+            skills VARCHAR(255),
+            other_skills TEXT,
+            status ENUM('New', 'Current', 'Final') NOT NULL DEFAULT 'New'
+        )";
 ?>
