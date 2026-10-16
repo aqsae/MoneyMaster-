@@ -49,4 +49,31 @@ if ($lastname == "") {
 } elseif (!preg_match("/^[A-Za-z]{1,20}$/", $lastname)) {
     $errors[] = "Last name must be letters only, max 20 characters.";
 }
+
+$dob_db = "";
+if ($dob == "") {
+    $errors[] = "Date of birth is required.";
+} else {
+    if (preg_match("/^(\d{4})-(\d{2})-(\d{2})$/", $dob, $parts)) {
+        $year = $parts[1]; $month = $parts[2]; $day = $parts[3];
+    } elseif (preg_match("/^(\d{2})\/(\d{2})\/(\d{4})$/", $dob, $parts)) {
+        $day = $parts[1]; $month = $parts[2]; $year = $parts[3];
+    } else {
+        $year = $month = $day = 0;
+    }
+ 
+    if (!checkdate((int)$month, (int)$day, (int)$year)) {
+        $errors[] = "Date of birth must be a valid date (dd/mm/yyyy).";
+    } else {
+        $dob_db = "$year-$month-$day";
+        if ($dob_db > date("Y-m-d")) {
+            $errors[] = "Date of birth cannot be in the future.";
+        } else {
+            $age = date_diff(date_create($dob_db), date_create("today"))->y;
+            if ($age < 15 || $age > 80) {
+                $errors[] = "Applicants must be between 15 and 80 years old.";
+            }
+        }
+    }
+}
 ?>
