@@ -103,4 +103,8 @@ $state_postcodes = array(
     "TAS" => array("7"),
     "ACT" => array("0", "2")
 );
+
+if (!array_key_exists($state, $state_postcodes)) {
+    $errors[] = "Please select a valid state.";
+}
 ?>
