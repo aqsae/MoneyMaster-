@@ -127,3 +127,35 @@ if (!$conn) {
     mysqli_close($conn);
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <link rel="stylesheet" href="styles/styles.css">
+         <link rel="stylesheet" href="styles/manage.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="MoneyMaster - HR manager EOI management">
+        <meta name="author" content="MoneyMaster Executive Team">
+        <title>MoneyMaster - Manage EOIs</title>
+    </head>
+
+    <body>
+    <?php include 'header.inc'; ?>
+
+        <main>
+            <br>
+            <h1>Manage Expressions of Interest</h1>
+    
+            <div class="manage-bar">
+                <span>Logged in as <strong><?php echo e($_SESSION["username"]); ?></strong></span>
+                <a href="logout.php">Log out</a>
+            </div>
+    
+            <?php if ($message != "") { ?>
+                <div class="manage-message"><?php echo $message; ?></div>
+            <?php } ?>
+        </main>
+    </body>
+</html>
