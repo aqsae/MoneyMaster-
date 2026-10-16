@@ -197,6 +197,19 @@ if (!$conn) {
                 </div>
             </form>
         </section>
+            
+        <section>
+            <h2>Delete EOIs by Job Reference</h2>
+            <form action="manage.php" method="POST" onsubmit="return confirm('Delete ALL EOIs for this job reference?');">
+                <input type="hidden" name="action" value="delete">
+                <label for="delete_jobref">Job reference</label>
+                <input type="text" id="delete_jobref" name="delete_jobref" maxlength="6">
+                <div>
+                    <button type="submit">Delete EOIs</button>
+                </div>
+            </form>
+        </section>
+
         </main>
     </body>
 </html>
