@@ -209,7 +209,63 @@ if (!$conn) {
                 </div>
             </form>
         </section>
+        <section>
+            <h2>Results (<?php echo count($results); ?>)</h2>
 
+            <?php if ($db_error != "") { ?>
+                <div class="manage-message"><?php echo $db_error; ?></div>
+            <?php } elseif (count($results) == 0) { ?>
+                <div class="manage-message">No EOIs found.</div>
+            <?php } else { ?>
+                <div class="manage-table-wrap">
+                    <table class="manage-table">
+                        <thead>
+                            <tr>
+                                <th>EOI #</th>
+                                <th>Job ref</th>
+                                <th>Name</th>
+                                <th>DOB</th>
+                                <th>Gender</th>
+                                <th>Address</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Skills</th>
+                                <th>Other skills</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($results as $row) { ?>
+                                <tr>
+                                    <td><?php echo e($row["EOInumber"]); ?></td>
+                                    <td><?php echo e($row["job_ref"]); ?></td>
+                                    <td><?php echo e($row["first_name"] . " " . $row["last_name"]); ?></td>
+                                    <td><?php echo e($row["dob"]); ?></td>
+                                    <td><?php echo e($row["gender"]); ?></td>
+                                    <td><?php echo e($row["street_address"] . ", " . $row["suburb"] . " " . $row["state"] . " " . $row["postcode"]); ?></td>
+                                    <td><?php echo e($row["email"]); ?></td>
+                                    <td><?php echo e($row["phone"]); ?></td>
+                                    <td><?php echo e($row["skills"]); ?></td>
+                                    <td><?php echo e($row["other_skills"]); ?></td>
+                                    <td>
+                                        <form action="manage.php?<?php echo e($_SERVER["QUERY_STRING"]); ?>" method="POST">
+                                            <input type="hidden" name="action" value="status">
+                                            <input type="hidden" name="eoi_number" value="<?php echo e($row["EOInumber"]); ?>">
+                                            <select name="new_status" aria-label="Status for EOI <?php echo e($row["EOInumber"]); ?>">
+                                                <?php foreach ($statuses as $status) { ?>
+                                                    <option value="<?php echo $status; ?>" <?php if ($row["status"] == $status) echo "selected"; ?>><?php echo $status; ?></option>
+                                                <?php } ?>
+                                            </select>
+                                            <button type="submit">Update</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php } ?>
+        </section>
         </main>
     </body>
 </html>
