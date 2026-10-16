@@ -156,6 +156,47 @@ if (!$conn) {
             <?php if ($message != "") { ?>
                 <div class="manage-message"><?php echo $message; ?></div>
             <?php } ?>
+
+            <section>
+            <h2>Find EOIs</h2>
+            <form action="manage.php" method="GET">
+                <div class="form-row">
+                    <div>
+                        <label for="jobref">Job reference</label>
+                        <input type="text" id="jobref" name="jobref" maxlength="6" value="<?php echo e($search_jobref); ?>">
+                    </div>
+                    <div>
+                        <label for="firstname">First name</label>
+                        <input type="text" id="firstname" name="firstname" maxlength="20" value="<?php echo e($search_first); ?>">
+                    </div>
+                    <div>
+                        <label for="lastname">Last name</label>
+                        <input type="text" id="lastname" name="lastname" maxlength="20" value="<?php echo e($search_last); ?>">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div>
+                        <label for="sort">Sort by</label>
+                        <select id="sort" name="sort">
+                            <?php foreach ($sort_fields as $field => $label) { ?>
+                                <option value="<?php echo $field; ?>" <?php if ($sort == $field) echo "selected"; ?>><?php echo $label; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="order">Order</label>
+                        <select id="order" name="order">
+                            <option value="ASC" <?php if ($order == "ASC") echo "selected"; ?>>Ascending</option>
+                            <option value="DESC" <?php if ($order == "DESC") echo "selected"; ?>>Descending</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit">Search</button>
+                    <a href="manage.php">List all EOIs</a>
+                </div>
+            </form>
+        </section>
         </main>
     </body>
 </html>
