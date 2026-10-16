@@ -113,4 +113,13 @@ if (!preg_match("/^[0-9]{4}$/", $postcode)) {
 } elseif (array_key_exists($state, $state_postcodes) && !in_array($postcode[0], $state_postcodes[$state])) {
     $errors[] = "Postcode $postcode does not match the state $state.";
 }
+
+if ($email == "") {
+    $errors[] = "Email address is required.";
+} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $errors[] = "Email address is not valid.";
+
+if (!preg_match("/^[0-9]{8,12}$/", $phone)) {
+    $errors[] = "Phone number must be 8 to 12 digits.";
+}
 ?>
