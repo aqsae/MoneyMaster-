@@ -24,4 +24,11 @@ $postcode    = isset($_POST["postcode"])    ? sanitise_input($_POST["postcode"])
 $email       = isset($_POST["email"])       ? sanitise_input($_POST["email"])       : "";
 $phone       = isset($_POST["phone"])       ? sanitise_input($_POST["phone"])       : "";
 $otherskills = isset($_POST["otherskills"]) ? sanitise_input($_POST["otherskills"]) : "";
+
+$skills = array();
+if (isset($_POST["skills"]) && is_array($_POST["skills"])) {
+    foreach ($_POST["skills"] as $skill) {
+        $skills[] = sanitise_input($skill);
+    }
+}
 ?>
