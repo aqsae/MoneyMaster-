@@ -83,5 +83,24 @@ if (!$conn) {
                 }
             }
         }
-            
+    $sql = "SELECT * FROM eoi";
+    $conditions = array();
+    $types = "";
+    $params = array();
+
+    if ($search_jobref != "") {
+        $conditions[] = "job_ref = ?";
+        $types .= "s";
+        $params[] = $search_jobref;
+    }
+    if ($search_first != "") {
+        $conditions[] = "first_name LIKE ?";
+        $types .= "s";
+        $params[] = "%" . $search_first . "%";
+    }
+    if ($search_last != "") {
+        $conditions[] = "last_name LIKE ?";
+        $types .= "s";
+        $params[] = "%" . $search_last . "%";
+    }
 ?>
