@@ -107,4 +107,10 @@ $state_postcodes = array(
 if (!array_key_exists($state, $state_postcodes)) {
     $errors[] = "Please select a valid state.";
 }
+
+if (!preg_match("/^[0-9]{4}$/", $postcode)) {
+    $errors[] = "Postcode must be exactly 4 digits.";
+} elseif (array_key_exists($state, $state_postcodes) && !in_array($postcode[0], $state_postcodes[$state])) {
+    $errors[] = "Postcode $postcode does not match the state $state.";
+}
 ?>
