@@ -1,10 +1,12 @@
 ?php
 
+// block direct URL access - only allow the form to post here
 if ($_SERVER["REQUEST_METHOD"] != "POST" || !isset($_POST["jobref"])) {
     header("Location: apply.php");
     exit();
 }
 
+// sanitise input: trim, strip slashes, escape html
 function sanitise_input($data) {
     $data = trim($data);
     $data = stripslashes($data);
@@ -12,6 +14,7 @@ function sanitise_input($data) {
     return $data;
 }
 
+// get the form values (empty string if missing)
 $jobref      = isset($_POST["jobref"])      ? sanitise_input($_POST["jobref"])      : "";
 $firstname   = isset($_POST["firstname"])   ? sanitise_input($_POST["firstname"])   : "";
 $lastname    = isset($_POST["lastname"])    ? sanitise_input($_POST["lastname"])    : "";
@@ -32,6 +35,7 @@ if (isset($_POST["skills"]) && is_array($_POST["skills"])) {
     }
 }
 
+// server-side validation (does not rely on the browser)
 $errors = array();
  
 if (!preg_match("/^[A-Za-z0-9]{6}$/", $jobref)) {
@@ -50,6 +54,7 @@ if ($lastname == "") {
     $errors[] = "Last name must be letters only, max 20 characters.";
 }
 
+// date input sends yyyy-mm-dd, but also accept dd/mm/yyyy
 $dob_db = "";
 if ($dob == "") {
     $errors[] = "Date of birth is required.";
@@ -92,7 +97,8 @@ if ($suburb == "") {
 } elseif (strlen($suburb) > 40) {
     $errors[] = "Suburb/town must be max 40 characters.";
 }
-                
+
+// first digit(s) of the postcode allowed for each state
 $state_postcodes = array(
     "VIC" => array("3", "8"),
     "NSW" => array("1", "2"),
@@ -142,6 +148,7 @@ if (count($skills) == 0 && $otherskills == "") {
     $errors[] = "Please select at least one skill or describe your other skills.";
 }
 
+// only reachers the database if everything is valid
 $eoi_number = 0;
 $db_error = "";
 
@@ -153,6 +160,7 @@ if (count($errors) == 0) {
     if (!$conn) {
         $db_error = "Unable to connect to the database.";
     } else {
+        // create the eoi table if it does not exist
         $create_table = "CREATE TABLE IF NOT EXISTS eoi (
             EOInumber INT AUTO_INCREMENT PRIMARY KEY,
             job_ref VARCHAR(6) NOT NULL,
