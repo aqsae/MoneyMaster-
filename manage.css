@@ -1,0 +1,13 @@
+.manage-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto 1.5rem;
+    color: var(--dark-green);
+}
+
+.manage-bar a {
+    color: var(--accent-color);
+    font-weight: bold;
+}
