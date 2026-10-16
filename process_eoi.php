@@ -43,4 +43,10 @@ if ($firstname == "") {
 } elseif (!preg_match("/^[A-Za-z]{1,20}$/", $firstname)) {
     $errors[] = "First name must be letters only, max 20 characters.";
 }
+
+if ($lastname == "") {
+    $errors[] = "Last name is required.";
+} elseif (!preg_match("/^[A-Za-z]{1,20}$/", $lastname)) {
+    $errors[] = "Last name must be letters only, max 20 characters.";
+}
 ?>
