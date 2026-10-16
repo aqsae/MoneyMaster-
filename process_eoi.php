@@ -37,4 +37,10 @@ $errors = array();
 if (!preg_match("/^[A-Za-z0-9]{6}$/", $jobref)) {
     $errors[] = "Job reference number must be exactly 6 letters or numbers.";
 }
+
+if ($firstname == "") {
+    $errors[] = "First name is required.";
+} elseif (!preg_match("/^[A-Za-z]{1,20}$/", $firstname)) {
+    $errors[] = "First name must be letters only, max 20 characters.";
+}
 ?>
