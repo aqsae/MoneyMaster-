@@ -76,4 +76,20 @@ if ($dob == "") {
         }
     }
 }
+
+if (!in_array($gender, array("female", "male", "other"))) {
+    $errors[] = "Please select a gender.";
+}
+
+if ($address == "") {
+    $errors[] = "Street address is required.";
+} elseif (strlen($address) > 40) {
+    $errors[] = "Street address must be max 40 characters.";
+}
+
+if ($suburb == "") {
+    $errors[] = "Suburb/town is required.";
+} elseif (strlen($suburb) > 40) {
+    $errors[] = "Suburb/town must be max 40 characters.";
+}
 ?>
