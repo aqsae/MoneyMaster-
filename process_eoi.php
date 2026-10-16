@@ -170,4 +170,43 @@ if (count($errors) == 0) {
             other_skills TEXT,
             status ENUM('New', 'Current', 'Final') NOT NULL DEFAULT 'New'
         )";
+
+if (!mysqli_query($conn, $create_table)) {
+            $db_error = "Unable to create the EOI table.";
+        } else {
+            $skills_list = implode(", ", $skills);
+
+            $insert = "INSERT INTO eoi (job_ref, first_name, last_name, dob, gender, street_address,
+                       suburb, state, postcode, email, phone, skills, other_skills)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($conn, $insert);
+            mysqli_stmt_bind_param(
+                $stmt,
+                "sssssssssssss",
+                $jobref,
+                $firstname,
+                $lastname,
+                $dob_db,
+                $gender,
+                $address,
+                $suburb,
+                $state,
+                $postcode,
+                $email,
+                $phone,
+                $skills_list,
+                $otherskills
+            );
+
+            if (mysqli_stmt_execute($stmt)) {
+                $eoi_number = mysqli_insert_id($conn);
+            } else {
+                $db_error = "Unable to save your application.";
+            }
+            mysqli_stmt_close($stmt);
+        }
+        mysqli_close($conn);
+    }
+}
+?>
 ?>
