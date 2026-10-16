@@ -92,4 +92,15 @@ if ($suburb == "") {
 } elseif (strlen($suburb) > 40) {
     $errors[] = "Suburb/town must be max 40 characters.";
 }
+                
+$state_postcodes = array(
+    "VIC" => array("3", "8"),
+    "NSW" => array("1", "2"),
+    "QLD" => array("4", "9"),
+    "NT"  => array("0"),
+    "WA"  => array("6"),
+    "SA"  => array("5"),
+    "TAS" => array("7"),
+    "ACT" => array("0", "2")
+);
 ?>
