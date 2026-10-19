@@ -19,11 +19,21 @@ $db_error = "";
 $results = array();
 
 $sort_fields = array(
-    "EOInumber"  => "EOI number",
-    "job_ref"    => "Job reference",
-    "first_name" => "First name",
-    "last_name"  => "Last name",
-    "status"     => "Status"
+    "EOInumber"      => "EOI number",
+    "job_ref"        => "Job reference",
+    "first_name"     => "First name",
+    "last_name"      => "Last name",
+    "dob"            => "Date of birth",
+    "gender"         => "Gender",
+    "street_address" => "Street address",
+    "suburb"         => "Suburb",
+    "state"          => "State",
+    "postcode"       => "Postcode",
+    "email"          => "Email",
+    "phone"          => "Phone",
+    "skills"         => "Skills",
+    "other_skills"   => "Other skills",
+    "status"         => "Status"
 );
 $statuses = array("New", "Current", "Final");
 
