@@ -38,8 +38,13 @@ if (isset($_POST["skills"]) && is_array($_POST["skills"])) {
 // server-side validation (does not rely on the browser)
 $errors = array();
  
+$jobref = strtoupper($jobref);
+$valid_jobrefs = array("ENG4A2", "FCA8B1", "PMX7A3");
+
 if (!preg_match("/^[A-Za-z0-9]{6}$/", $jobref)) {
     $errors[] = "Job reference number must be exactly 6 letters or numbers.";
+} elseif (!in_array($jobref, $valid_jobrefs)) {
+    $errors[] = "Please enter a valid job reference number (ENG4A2, FCA8B1 or PMX7A3).";
 }
 
 if ($firstname == "") {
