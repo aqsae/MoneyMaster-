@@ -7,7 +7,7 @@ session_start([
     'cookie_samesite' => 'Strict' // makes it so that the cookie isn't sent when you use links from other unrelated sites to prevents CRSF attacks!!      
 ]);
 
-require_once 'db.php';
+require_once 'settings.php';
 
 $error = '';
 
@@ -52,28 +52,32 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta charset="UTF-8">
     <title>Login</title>
     <style>
-        body { font-family: Helvetica, sans-serif;
+        body { 
+            font-family: Helvetica, sans-serif;
              display: flex;
             justify-content: center; 
             align-items: center; 
             height: 100vh; 
             background: #f4f6f9; }
-        .login-box { 
+        .login-box {
             background: white;
             padding: 30px; 
             border-radius: 8px; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
             width: 320px; }
-        .error { color: #dc3545; 
-         font-size: 0.9em; 
-        margin-bottom: 15px; }
-        input[type="text"], input[type="password"] { width: 100%;
-         padding: 8px; 
-         margin: 8px 0 16px; 
-         border: 1px solid #ccc; 
-         border-radius: 4px; 
-         box-sizing: border-box; }
-        button { width: 100%; 
+        .error { 
+            color: #dc3545; 
+            font-size: 0.9em; 
+            margin-bottom: 15px; }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 8px; 
+            margin: 8px 0 16px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            box-sizing: border-box; }
+        button { 
+        width: 100%; 
         padding: 10px; 
         background: #007bff; 
         color: white; 
