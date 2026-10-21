@@ -1,10 +1,13 @@
 <?php
+session_start();
 
 // block direct URL access - only allow the form to post here
 if ($_SERVER["REQUEST_METHOD"] != "POST" || !isset($_POST["jobref"])) {
     header("Location: apply.php");
     exit();
 }
+
+require_once "eoi_options.php";
 
 // sanitise input: trim, strip slashes, escape html
 function sanitise_input($data) {
@@ -15,7 +18,7 @@ function sanitise_input($data) {
 }
 
 // get the form values (empty string if missing)
-$jobref      = isset($_POST["jobref"])      ? sanitise_input($_POST["jobref"])      : "";
+$jobref      = isset($_POST["jobref"])      ? strtoupper(sanitise_input($_POST["jobref"])) : "";
 $firstname   = isset($_POST["firstname"])   ? sanitise_input($_POST["firstname"])   : "";
 $lastname    = isset($_POST["lastname"])    ? sanitise_input($_POST["lastname"])    : "";
 $dob         = isset($_POST["dob"])         ? sanitise_input($_POST["dob"])         : "";
@@ -37,32 +40,27 @@ if (isset($_POST["skills"]) && is_array($_POST["skills"])) {
 
 // server-side validation (does not rely on the browser)
 $errors = array();
- 
-$jobref = strtoupper($jobref);
-$valid_jobrefs = array("ENG4A2", "FCA8B1", "PMX7A3");
 
 if (!preg_match("/^[A-Za-z0-9]{6}$/", $jobref)) {
-    $errors[] = "Job reference number must be exactly 6 letters or numbers.";
-} elseif (!in_array($jobref, $valid_jobrefs)) {
-    $errors[] = "Please enter a valid job reference number (ENG4A2, FCA8B1 or PMX7A3).";
+    $errors["jobref"] = "Job reference number must be exactly 6 letters or numbers.";
 }
 
 if ($firstname == "") {
-    $errors[] = "First name is required.";
+    $errors["firstname"] = "First name is required.";
 } elseif (!preg_match("/^[A-Za-z]{1,20}$/", $firstname)) {
-    $errors[] = "First name must be letters only, max 20 characters.";
+    $errors["firstname"] = "First name must be letters only, max 20 characters.";
 }
 
 if ($lastname == "") {
-    $errors[] = "Last name is required.";
+    $errors["lastname"] = "Last name is required.";
 } elseif (!preg_match("/^[A-Za-z]{1,20}$/", $lastname)) {
-    $errors[] = "Last name must be letters only, max 20 characters.";
+    $errors["lastname"] = "Last name must be letters only, max 20 characters.";
 }
 
 // date input sends yyyy-mm-dd, but also accept dd/mm/yyyy
 $dob_db = "";
 if ($dob == "") {
-    $errors[] = "Date of birth is required.";
+    $errors["dob"] = "Date of birth is required.";
 } else {
     if (preg_match("/^(\d{4})-(\d{2})-(\d{2})$/", $dob, $parts)) {
         $year = $parts[1]; $month = $parts[2]; $day = $parts[3];
@@ -71,91 +69,73 @@ if ($dob == "") {
     } else {
         $year = $month = $day = 0;
     }
- 
+
     if (!checkdate((int)$month, (int)$day, (int)$year)) {
-        $errors[] = "Date of birth must be a valid date (dd/mm/yyyy).";
+        $errors["dob"] = "Date of birth must be a valid date (dd/mm/yyyy).";
     } else {
         $dob_db = "$year-$month-$day";
         if ($dob_db > date("Y-m-d")) {
-            $errors[] = "Date of birth cannot be in the future.";
+            $errors["dob"] = "Date of birth cannot be in the future.";
         } else {
             $age = date_diff(date_create($dob_db), date_create("today"))->y;
             if ($age < 15 || $age > 80) {
-                $errors[] = "Applicants must be between 15 and 80 years old.";
+                $errors["dob"] = "Applicants must be between 15 and 80 years old.";
             }
         }
     }
 }
 
 if (!in_array($gender, array("female", "male", "other"))) {
-    $errors[] = "Please select a gender.";
+    $errors["gender"] = "Please select a gender.";
 }
 
 if ($address == "") {
-    $errors[] = "Street address is required.";
+    $errors["address"] = "Street address is required.";
 } elseif (strlen($address) > 40) {
-    $errors[] = "Street address must be max 40 characters.";
+    $errors["address"] = "Street address must be max 40 characters.";
 }
 
 if ($suburb == "") {
-    $errors[] = "Suburb/town is required.";
+    $errors["suburb"] = "Suburb/town is required.";
 } elseif (strlen($suburb) > 40) {
-    $errors[] = "Suburb/town must be max 40 characters.";
+    $errors["suburb"] = "Suburb/town must be max 40 characters.";
 }
 
-// first digit(s) of the postcode allowed for each state
-$state_postcodes = array(
-    "VIC" => array("3", "8"),
-    "NSW" => array("1", "2"),
-    "QLD" => array("4", "9"),
-    "NT"  => array("0"),
-    "WA"  => array("6"),
-    "SA"  => array("5"),
-    "TAS" => array("7"),
-    "ACT" => array("0", "2")
-);
-
 if (!array_key_exists($state, $state_postcodes)) {
-    $errors[] = "Please select a valid state.";
+    $errors["state"] = "Please select a valid state.";
 }
 
 if (!preg_match("/^[0-9]{4}$/", $postcode)) {
-    $errors[] = "Postcode must be exactly 4 digits.";
+    $errors["postcode"] = "Postcode must be exactly 4 digits.";
 } elseif (array_key_exists($state, $state_postcodes) && !in_array($postcode[0], $state_postcodes[$state])) {
-    $errors[] = "Postcode $postcode does not match the state $state.";
+    $errors["postcode"] = "Postcode $postcode does not match the state $state.";
 }
 
 if ($email == "") {
-    $errors[] = "Email address is required.";
+    $errors["email"] = "Email address is required.";
 } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $errors[] = "Email address is not valid.";
-
-if (!preg_match("/^[0-9]{8,12}$/", $phone)) {
-    $errors[] = "Phone number must be 8 to 12 digits.";
+    $errors["email"] = "Email address is not valid.";
 }
 
-$valid_skills = array(
-    "budgeting-tools",
-    "digital-payments",
-    "financial-security",
-    "financial-analysis",
-    "customer-service",
-    "software-development"
-);
+if (!preg_match("/^[0-9]{8,12}$/", $phone)) {
+    $errors["phone"] = "Phone number must be 8 to 12 digits.";
+}
+
 foreach ($skills as $skill) {
-    if (!in_array($skill, $valid_skills)) {
-        $errors[] = "Invalid skill selected.";
+    if (!array_key_exists($skill, $skill_options)) {
+        $errors["skills"] = "Invalid skill selected.";
         break;
     }
 }
 
 if (count($skills) == 0 && $otherskills == "") {
-    $errors[] = "Please select at least one skill or describe your other skills.";
+    $errors["skills"] = "Please select at least one skill or describe your other skills.";
 }
 
-// only reachers the database if everything is valid
+// only touch the database if everything is valid
 $eoi_number = 0;
 $db_error = "";
+$conn = false;
 
 if (count($errors) == 0) {
     require_once "settings.php";
@@ -165,34 +145,78 @@ if (count($errors) == 0) {
     if (!$conn) {
         $db_error = "Unable to connect to the database.";
     } else {
-        // create the eoi table if it does not exist
-        $create_table = "CREATE TABLE IF NOT EXISTS eoi (
-            EOInumber INT AUTO_INCREMENT PRIMARY KEY,
-            job_ref VARCHAR(6) NOT NULL,
-            first_name VARCHAR(20) NOT NULL,
-            last_name VARCHAR(20) NOT NULL,
-            dob DATE NOT NULL,
-            gender VARCHAR(10) NOT NULL,
-            street_address VARCHAR(40) NOT NULL,
-            suburb VARCHAR(40) NOT NULL,
-            state VARCHAR(3) NOT NULL,
-            postcode CHAR(4) NOT NULL,
-            email VARCHAR(100) NOT NULL,
-            phone VARCHAR(12) NOT NULL,
-            skills VARCHAR(255),
-            other_skills TEXT,
-            status ENUM('New', 'Current', 'Final') NOT NULL DEFAULT 'New'
-        )";
-
-if (!mysqli_query($conn, $create_table)) {
-            $db_error = "Unable to create the EOI table.";
+        $job_check = mysqli_prepare($conn, "SELECT ref FROM jobs WHERE ref = ?");
+        if (!$job_check) {
+            $db_error = "Unable to check the job reference.";
         } else {
-            $skills_list = implode(", ", $skills);
+            mysqli_stmt_bind_param($job_check, "s", $jobref);
+            mysqli_stmt_execute($job_check);
+            mysqli_stmt_store_result($job_check);
+            if (mysqli_stmt_num_rows($job_check) == 0) {
+                $errors["jobref"] = "Please choose a job from the list of current jobs.";
+            }
+            mysqli_stmt_close($job_check);
+        }
+    }
+}
 
-            $insert = "INSERT INTO eoi (job_ref, first_name, last_name, dob, gender, street_address,
-                       suburb, state, postcode, email, phone, skills, other_skills)
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            $stmt = mysqli_prepare($conn, $insert);
+if (count($errors) > 0) {
+    if ($conn) {
+        mysqli_close($conn);
+    }
+    $_SESSION["eoi_errors"] = $errors;
+    $_SESSION["eoi_old"] = array(
+        "jobref"      => $jobref,
+        "firstname"   => $firstname,
+        "lastname"    => $lastname,
+        "dob"         => $dob,
+        "gender"      => $gender,
+        "address"     => $address,
+        "suburb"      => $suburb,
+        "state"       => $state,
+        "postcode"    => $postcode,
+        "email"       => $email,
+        "phone"       => $phone,
+        "skills"      => $skills,
+        "otherskills" => $otherskills
+    );
+    header("Location: apply.php");
+    exit();
+}
+
+if ($conn && $db_error == "") {
+    // create the eoi table if it does not exist
+    $create_table = "CREATE TABLE IF NOT EXISTS eoi (
+        EOInumber INT AUTO_INCREMENT PRIMARY KEY,
+        job_ref VARCHAR(6) NOT NULL,
+        first_name VARCHAR(20) NOT NULL,
+        last_name VARCHAR(20) NOT NULL,
+        dob DATE NOT NULL,
+        gender VARCHAR(10) NOT NULL,
+        street_address VARCHAR(40) NOT NULL,
+        suburb VARCHAR(40) NOT NULL,
+        state VARCHAR(3) NOT NULL,
+        postcode CHAR(4) NOT NULL,
+        email VARCHAR(100) NOT NULL,
+        phone VARCHAR(12) NOT NULL,
+        skills VARCHAR(255),
+        other_skills TEXT,
+        status ENUM('New', 'Current', 'Final') NOT NULL DEFAULT 'New'
+    )";
+
+    if (!mysqli_query($conn, $create_table)) {
+        $db_error = "Unable to create the EOI table.";
+    } else {
+        $skills_list = implode(", ", $skills);
+
+        // prepared statement so input can't break the SQL
+        $insert = "INSERT INTO eoi (job_ref, first_name, last_name, dob, gender, street_address,
+                   suburb, state, postcode, email, phone, skills, other_skills)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $insert);
+        if (!$stmt) {
+            $db_error = "Unable to save your application.";
+        } else {
             mysqli_stmt_bind_param(
                 $stmt,
                 "sssssssssssss",
@@ -218,11 +242,13 @@ if (!mysqli_query($conn, $create_table)) {
             }
             mysqli_stmt_close($stmt);
         }
-        mysqli_close($conn);
     }
 }
-?>
 
+if ($conn) {
+    mysqli_close($conn);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -232,14 +258,13 @@ if (!mysqli_query($conn, $create_table)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="MoneyMaster - Application result">
     <meta name="author" content="MoneyMaster Executive Team">
-    <title>MoneyMaster - Application</title>
+    <title>Application | MoneyMaster</title>
 </head>
 
 <body>
     <?php include 'header.inc'; ?>
 
     <main>
-        <br>
         <?php if ($eoi_number > 0) { ?>
             <h1>Application Received</h1>
             <section>
@@ -247,22 +272,15 @@ if (!mysqli_query($conn, $create_table)) {
                 <p>Your Expression of Interest number is <strong><?php echo $eoi_number; ?></strong>. Please keep it for your records.</p>
                 <p><a href="index.php">Back to Home</a></p>
             </section>
-        <?php } elseif ($db_error != "") { ?>
+        <?php } else { ?>
             <h1>Something Went Wrong</h1>
             <section>
                 <p><?php echo $db_error; ?> Please try again later.</p>
                 <p><a href="apply.php">Back to the application form</a></p>
             </section>
-        <?php } else { ?>
-            <h1>Please Fix the Following</h1>
-            <section>
-                <ul>
-                    <?php foreach ($errors as $error) { echo "<li>$error</li>"; } ?>
-                </ul>
-                <p><a href="apply.php">Back to the application form</a></p>
-            </section>
         <?php } ?>
     </main>
+
     <?php include 'footer.inc'; ?>
 </body>
 </html>
