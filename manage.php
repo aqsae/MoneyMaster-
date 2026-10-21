@@ -152,19 +152,18 @@ if (!$conn) {
 
 <head>
     <link rel="stylesheet" href="styles/styles.css">
-     <link rel="stylesheet" href="styles/manage.css">
+    <link rel="stylesheet" href="styles/manage.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="MoneyMaster - HR manager EOI management">
     <meta name="author" content="MoneyMaster Executive Team">
-    <title>MoneyMaster - Manage EOIs</title>
+    <title>Manage EOIs | MoneyMaster</title>
 </head>
 
 <body>
     <?php include 'header.inc'; ?>
 
     <main>
-        <br>
         <h1>Manage Expressions of Interest</h1>
 
         <div class="manage-bar">
@@ -223,12 +222,12 @@ if (!$conn) {
                 <input type="hidden" name="action" value="delete">
                 <label for="delete_jobref">Job reference</label>
                 <input type="text" id="delete_jobref" name="delete_jobref" maxlength="6">
-                <p>
-                    <input type="checkbox" id="confirm_delete" name="confirm_delete" value="yes">
+                <p class="confirm-text">
                     <label for="confirm_delete">I understand this will delete ALL EOIs for this job reference</label>
                 </p>
-                <div>
+                <div class="delete-row">
                     <button type="submit">Delete EOIs</button>
+                    <input type="checkbox" id="confirm_delete" name="confirm_delete" value="yes">
                 </div>
             </form>
         </section>
@@ -272,7 +271,7 @@ if (!$conn) {
                                     <td><?php echo e($row["skills"]); ?></td>
                                     <td><?php echo e($row["other_skills"]); ?></td>
                                     <td>
-                                        <form action="manage.php?<?php echo e($_SERVER["QUERY_STRING"]); ?>" method="POST">
+                                        <form action="manage.php?<?php echo e(isset($_SERVER["QUERY_STRING"]) ? $_SERVER["QUERY_STRING"] : ""); ?>" method="POST">
                                             <input type="hidden" name="action" value="status">
                                             <input type="hidden" name="eoi_number" value="<?php echo e($row["EOInumber"]); ?>">
                                             <select name="new_status" aria-label="Status for EOI <?php echo e($row["EOInumber"]); ?>">
