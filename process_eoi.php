@@ -153,7 +153,7 @@ if (count($errors) == 0) {
             mysqli_stmt_execute($job_check);
             mysqli_stmt_store_result($job_check);
             if (mysqli_stmt_num_rows($job_check) == 0) {
-                $errors["jobref"] = "Please choose a job from the list of current jobs.";
+                $errors["jobref"] = "Job reference $jobref does not match any of our current jobs. Please enter a valid job reference number.";
             }
             mysqli_stmt_close($job_check);
         }
