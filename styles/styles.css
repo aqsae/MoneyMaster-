@@ -1,0 +1,1418 @@
+/*
+filename: styles.css
+author: aqsa shiyana baanu
+created: 26/08/26
+last modified: 11/09/26
+description: styles for the MoneyMaster website
+*/
+
+/* main colours and page settings */
+
+:root {
+    --accent-color: rgb(72, 139, 60);
+    --cream: #fcffea;
+    --dark-green: #003535;
+    --mid-green: #4a7c4e;
+    --light-green: #8aab5a;
+    --white: #ffffff;
+    --soft-green: #dce8c8;
+    --pale-green: #eef4df;
+    --text: #2f4f4f;
+    --muted: #6b7a5e;
+    --radius: 20px;
+}
+@font-face {
+    font-family: "Saint George";
+    src: url("../fonts/saintgeorge.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+/* this makes everything a bit easier to control */
+
+* {
+    box-sizing: border-box;
+    line-height: 140%;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--cream);
+    color: var(--dark-green);
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: "Saint George", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    font-size: 50px;
+}
+
+h2 {
+    font-size: 36px;
+}
+
+
+/* navigation bar */
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 90px;
+    padding: 0.8rem 5%;
+    margin: 0;
+    background-color: rgba(252, 255, 234, 0.96);
+    border-bottom: 1px solid rgba(0, 53, 53, 0.15);
+    box-shadow: 0 4px 18px rgba(0, 53, 53, 0.18);
+    backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+}
+
+.logo {
+    width: 180px;
+    height: auto;
+    display: block;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li a {
+    position: relative;
+    color: var(--dark-green);
+    font-size: 1.05rem;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.nav-links li a:hover {
+    color: var(--accent-color);
+}
+
+.nav-links a::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: width 0.3s;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+
+/* navigation buttons */
+
+.btns {
+    display: flex;
+    align-items: center;
+}
+
+.btn {
+    padding: 0.8rem 2rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    border: 1.5px solid var(--dark-green);
+    background-color: var(--cream);
+    cursor: pointer;
+    transition: 0.3s;
+    color: var(--dark-green);
+}
+
+.btn:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--cream);
+}
+
+
+/* spacing below the fixed navigation */
+
+main {
+    width: 100%;
+    max-width: 1200px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 130px 5% 3rem;
+}
+
+
+/* =========================================================
+   HOME PAGE
+   ========================================================= */
+
+
+/* home page header image */
+
+.image-container {
+    position: relative;
+    width: 100%;
+    display: block;
+    overflow: hidden;
+    margin-top: 0;
+}
+
+.thumbnail {
+    width: 100%;
+    min-height: 600px;
+    object-fit: cover;
+    display: block;
+}
+
+.overlay-heading {
+    position: absolute;
+    top: 25%;
+    left: 10%;
+    right: 10%;
+    color: var(--cream);
+    font-family: "Saint George", sans-serif;
+    font-size: 6rem;
+    font-weight: bold;
+    text-align: left;
+    text-shadow: 2px 2px 8px rgba(0, 53, 53, 0.8);
+}
+
+.overlay-heading::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 4px;
+    background-color: var(--cream);
+    transition: width 0.3s;
+}
+
+.overlay-heading:hover::after {
+    width: 55%;
+}
+
+
+/* get started button */
+
+.start {
+    position: absolute;
+    top: 45%;
+    left: 12%;
+    z-index: 10;
+    display: block;
+    padding: 0.8rem 2rem;
+    border: 1.5px solid transparent;
+    border-radius: 20px;
+    color: var(--cream);
+    background-color: var(--dark-green);
+    font-size: 1rem;
+    box-shadow: 0 4px 10px rgba(30, 86, 42, 0.3);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.start:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-color: rgba(0, 53, 53, 0.1);
+}
+
+
+/* what we can do for you section */
+
+.description {
+    width: 100%;
+    min-height: 400px;
+    padding: 5rem;
+    color: var(--cream);
+    background-color: var(--dark-green);
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#description-text-block {
+    max-width: 40%;
+    text-align: left;
+}
+
+#description-text-block h2 {
+    color: var(--cream);
+}
+
+#description-text-block p {
+    color: var(--cream);
+}
+
+
+/* first circle */
+
+.circle1 {
+    width: 300px;
+    height: 300px;
+    margin-top: 3%;
+    margin-left: 10%;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--soft-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+
+/* what our mission is section */
+
+.mission-banner {
+    width: 100%;
+    min-height: 400px;
+    padding: 5rem;
+    color: var(--cream);
+    background-color: var(--mid-green);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#mission-text-block {
+    max-width: 40%;
+    margin-right: 10%;
+    text-align: right;
+}
+
+#mission-text-block h2,
+#mission-text-block p {
+    color: var(--cream);
+}
+
+
+/* second circle */
+
+.circle2 {
+    width: 300px;
+    height: 300px;
+    margin-top: 3%;
+    margin-right: 10%;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background-color: var(--dark-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.icons {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    display: block;
+}
+
+#icon1,
+#icon2 {
+    max-width: 80%;
+    max-height: 80%;
+}
+
+
+/* smart tools section */
+
+.features-section {
+    width: 100%;
+    padding: 5rem 5%;
+    background-color: var(--dark-green);
+    text-align: center;
+}
+
+.features-section .section-title {
+    margin-bottom: 3rem;
+    color: var(--cream);
+    font-size: 2.5rem;
+}
+
+.features-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+}
+
+.feature-card {
+    padding: 2.5rem;
+    border: 1px solid var(--light-green);
+    border-radius: 20px;
+    background-color: var(--mid-green);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    text-align: left;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--cream);
+}
+
+.feature-card h3 {
+    margin-top: 0;
+    color: var(--cream);
+    font-size: 1.4rem;
+}
+
+.feature-card p {
+    color: var(--cream);
+    line-height: 150%;
+}
+
+
+/* financial education cards */
+
+.education-section {
+    width: 100%;
+    padding: 5rem 5%;
+    background-color: var(--soft-green);
+    text-align: center;
+}
+
+.education-section .section-title {
+    margin-bottom: 1rem;
+    color: var(--dark-green);
+    font-size: 2.5rem;
+}
+
+.education-section .section-subtitle {
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    color: var(--dark-green);
+}
+
+.education-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.education-card {
+    padding: 2rem;
+    border: 1px solid var(--dark-green);
+    border-radius: 16px;
+    color: var(--cream);
+    background-color: var(--dark-green);
+    box-shadow: 0 10px 30px rgba(0, 53, 53, 0.2);
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+.education-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-color);
+}
+
+.education-card h3 {
+    color: var(--cream);
+}
+
+.education-card p {
+    color: var(--cream);
+    opacity: 0.9;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.35rem 0.85rem;
+    border-radius: 12px;
+    color: var(--dark-green);
+    background-color: var(--light-green);
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+
+/* comparison table */
+
+.table-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 4rem auto;
+    overflow-x: auto;
+    border-radius: 20px;
+    background-color: var(--dark-green);
+    box-shadow: 0 10px 30px rgba(0, 53, 53, 0.15);
+}
+
+.pricing-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 1rem;
+    text-align: left;
+}
+
+.pricing-table th {
+    padding: 1.25rem 1.5rem;
+    color: var(--cream);
+    background-color: var(--dark-green);
+    font-weight: 600;
+    border-bottom: 3px solid var(--accent-color);
+}
+
+.pricing-table td {
+    padding: 1.25rem 1.5rem;
+    color: var(--cream);
+    border-bottom: 1px solid rgba(252, 255, 234, 0.15);
+}
+
+.pricing-table .feature-name {
+    color: var(--cream);
+    font-weight: 600;
+}
+
+.pricing-table .highlight-column {
+    color: var(--dark-green);
+    background-color: var(--light-green);
+}
+
+.pricing-table .highlight-cell {
+    color: var(--cream);
+    background-color: #002626;
+    font-weight: 600;
+}
+
+.pricing-table tbody tr:nth-child(even) {
+    background-color: #174b43;
+}
+
+.pricing-table tbody tr:nth-child(even) .highlight-cell {
+    color: var(--cream);
+    background-color: #002626;
+}
+
+.pricing-table tbody tr:hover {
+    background-color: var(--mid-green);
+}
+
+
+/* =========================================================
+   JOBS PAGE
+   ========================================================= */
+
+
+/* jobs page sections */
+
+main > section {
+    background-color: var(--soft-green);
+    border-radius: var(--radius);
+    padding: 2rem 2.25rem;
+    margin-bottom: 2rem;
+    border-top: 4px solid var(--mid-green);
+    box-shadow: 0 8px 25px rgba(0, 53, 53, 0.1);
+}
+
+
+/* jobs heading */
+
+main > h1 {
+    color: var(--dark-green);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+main > h1::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    margin: 0.5rem auto 0;
+    border-radius: 2px;
+    background-color: var(--accent-color);
+}
+
+
+/* job title */
+
+main > section h2 {
+    font-family: "Saint George", sans-serif;
+    font-size: 1.55rem;
+    color: var(--dark-green);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+}
+
+
+/* salary line */
+
+main > section > p:first-of-type {
+    font-size: 0.875rem;
+    color: var(--mid-green);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+
+/* description paragraph */
+
+main > section > p:nth-of-type(2) {
+    color: var(--text);
+    font-size: 0.975rem;
+    margin-bottom: 1.5rem;
+    max-width: 68ch;
+}
+
+
+/* job headings */
+
+main > section h3 {
+    color: var(--dark-green);
+    font-size: 1.15rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+
+/* job lists */
+
+main > section ol,
+main > section ul {
+    padding-left: 1.4rem;
+}
+
+main > section li {
+    color: var(--text);
+    padding: 0.2rem 0;
+}
+
+main > section li::marker {
+    color: var(--accent-color);
+}
+
+
+/* hiring process box */
+
+aside {
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 2.5rem;
+    border-left: 5px solid var(--accent-color);
+    border-radius: var(--radius);
+    background-color: var(--dark-green);
+    color: var(--cream);
+    font-size: 0.95rem;
+    box-shadow: 0 8px 25px rgba(0, 53, 53, 0.2);
+}
+
+aside h2 {
+    margin-top: 0;
+    color: var(--cream);
+    font-size: 1.5rem;
+}
+
+aside ol {
+    padding-left: 1.3rem;
+}
+
+aside ol li {
+    padding: 0.2rem 0;
+    color: var(--cream);
+}
+
+aside ol li::marker {
+    color: var(--light-green);
+}
+
+
+/* =========================================================
+   APPLY PAGE
+   ========================================================= */
+
+
+/* application form box */
+
+main > section:has(form) {
+    max-width: 850px;
+    margin: 0 auto 3rem;
+    background-color: var(--soft-green);
+}
+
+
+/* form intro */
+
+#form-intro {
+    color: var(--mid-green);
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+
+/* form headings */
+
+form h2 {
+    padding-bottom: 0.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--dark-green);
+    font-size: 1.7rem;
+    border-bottom: 2px solid var(--light-green);
+}
+
+form h2:first-child {
+    margin-top: 0;
+}
+
+
+/* form paragraphs */
+
+form p {
+    margin-bottom: 1.2rem;
+}
+
+
+/* labels */
+
+label {
+    display: block;
+    margin-bottom: 0.3rem;
+    color: var(--dark-green);
+    font-weight: bold;
+}
+
+
+/* form inputs */
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.75rem;
+    border: 1.5px solid var(--mid-green);
+    border-radius: 8px;
+    color: var(--dark-green);
+    background-color: var(--cream);
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(72, 139, 60, 0.15);
+}
+
+textarea {
+    resize: vertical;
+}
+
+
+/* gender and skills boxes */
+
+fieldset {
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.5rem;
+    border: 1.5px solid var(--mid-green);
+    border-radius: 12px;
+    background-color: rgba(252, 255, 234, 0.45);
+}
+
+legend {
+    padding: 0 0.5rem;
+    color: var(--dark-green);
+    font-weight: bold;
+}
+
+fieldset p {
+    margin: 0.5rem 0;
+}
+
+fieldset label {
+    display: inline;
+    margin-right: 0.5rem;
+    font-weight: normal;
+}
+
+fieldset input {
+    margin-right: 0.5rem;
+    accent-color: var(--accent-color);
+}
+
+
+/* form row */
+
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.form-row > p {
+    flex: 1 1 150px;
+}
+
+
+/* form buttons */
+
+form button {
+    padding: 0.7rem 2rem;
+    margin-right: 1rem;
+    border: 1.5px solid var(--dark-green);
+    border-radius: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button[type="submit"] {
+    color: var(--cream);
+    background-color: var(--accent-color);
+}
+
+button[type="submit"]:hover {
+    background-color: #356b30;
+}
+
+button[type="reset"] {
+    color: var(--dark-green);
+    background-color: var(--cream);
+}
+
+button[type="reset"]:hover {
+    color: var(--cream);
+    background-color: var(--dark-green);
+}
+
+
+/* =========================================================
+   ABOUT PAGE
+   ========================================================= */
+
+
+/* about page overall layout */
+
+.about-page {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.about-page section {
+    max-width: 900px;
+    margin: 0 auto 4rem;
+}
+
+
+/* about page headings */
+
+.about-page h1 {
+    margin-bottom: 1.5rem;
+    color: var(--dark-green);
+    text-align: center;
+}
+
+.about-page h1::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 4px;
+    margin: 0.5rem auto 0;
+    border-radius: 2px;
+    background-color: var(--accent-color);
+}
+
+
+/* about page introduction */
+
+.about-page > section:first-child {
+    padding: 2rem;
+    border-radius: var(--radius);
+    background-color: var(--soft-green);
+    box-shadow: 0 8px 25px rgba(0, 53, 53, 0.08);
+    text-align: center;
+}
+
+.about-page > section:first-child > p {
+    margin-bottom: 2rem;
+    color: var(--text);
+    font-size: 1.1rem;
+}
+
+
+/* team information */
+
+.about-page > section:first-child > ul {
+    max-width: 700px;
+    padding: 0;
+    margin: 0 auto;
+    list-style: none;
+}
+
+.about-page > section:first-child > ul > li {
+    padding: 2rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 20px;
+    background-color: var(--dark-green);
+    box-shadow: 0 10px 30px rgba(0, 53, 53, 0.2);
+    text-align: center;
+}
+
+.about-page > section:first-child > ul > li > span {
+    display: inline-block;
+    padding: 0.35rem 0.85rem;
+    border-radius: 12px;
+    color: var(--dark-green);
+    background-color: var(--light-green);
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.team-name {
+    width: auto;
+    color: var(--cream);
+    font-family: "Saint George", sans-serif;
+    font-size: 1.8rem;
+    font-weight: normal;
+    transition: transform 0.3s ease;
+}
+
+.team-name:hover {
+    transform: scale(1.05);
+    color: var(--light-green);
+}
+
+
+/* tutorial information */
+
+.about-page > section:first-child > ul > li > ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3rem;
+    padding: 0;
+    margin: 1.5rem 0 0;
+    list-style: none;
+}
+
+.about-page > section:first-child > ul > li > ul > li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.about-page > section:first-child > ul > li > ul > li > span {
+    color: var(--soft-green);
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.about-page > section:first-child > ul > li > ul > li > strong {
+    margin-top: 0.25rem;
+    color: var(--cream);
+    font-size: 1.1rem;
+}
+
+
+/* member contributions */
+
+.contributions-section {
+    max-width: 900px;
+    margin: 0 auto 4rem;
+}
+
+.contributions-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+.contribution-card {
+    width: calc(50% - 0.75rem);
+    padding: 1.5rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 20px;
+    background-color: var(--mid-green);
+    text-align: center;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contribution-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--cream);
+    box-shadow: 0 10px 25px rgba(0, 53, 53, 0.2);
+    cursor: pointer;
+}
+
+.member-header {
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(252, 255, 234, 0.2);
+}
+
+.member-name {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--cream);
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.student-id {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 12px;
+    color: var(--dark-green);
+    background-color: var(--light-green);
+    font-size: 0.8rem;
+}
+
+.member-details {
+    margin: 0;
+    color: var(--cream);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.member-details:hover {
+    color: var(--soft-green);
+}
+
+
+/* team quotes */
+
+.about-page .name {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark-green);
+    font-family: "Saint George", sans-serif;
+    font-size: 1.4rem;
+    text-align: left;
+}
+
+blockquote {
+    position: relative;
+    padding: 1.5rem;
+    margin: 0 0 1.5rem;
+    border-left: 5px solid var(--accent-color);
+    border-radius: 0 12px 12px 0;
+    background-color: var(--dark-green);
+    box-shadow: 0 5px 20px rgba(0, 53, 53, 0.15);
+}
+
+blockquote::before {
+    content: "“";
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    color: var(--light-green);
+    opacity: 0.4;
+    font-family: Georgia, serif;
+    font-size: 4rem;
+}
+
+blockquote > p {
+    margin: 0 0 1rem;
+    color: var(--cream);
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+blockquote > footer {
+    display: block;
+    padding: 0.75rem 1rem;
+    margin: 0;
+    border: 0;
+    border-radius: 8px;
+    color: var(--dark-green);
+    background-color: var(--soft-green);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 0.9rem;
+    text-align: left;
+}
+
+blockquote > footer > span {
+    margin-right: 0.3rem;
+    color: var(--dark-green);
+    font-weight: bold;
+}
+
+
+/* team photo */
+
+figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 900px;
+    margin: 3rem auto;
+}
+
+figure > img {
+    display: block;
+    max-width: 85%;
+    height: auto;
+    border: 4px solid var(--mid-green);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 53, 53, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+figure > img:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 53, 53, 0.3);
+    cursor: pointer;
+}
+
+figcaption {
+    max-width: 700px;
+    width: 100%;
+    padding: 0.5rem 1.25rem;
+    margin-top: 1rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 20px;
+    color: var(--dark-green);
+    background-color: var(--soft-green);
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+
+/* about page team facts table */
+
+.about-page table {
+    width: 100%;
+    margin: 3rem auto;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 16px;
+    background-color: var(--dark-green);
+    box-shadow: 0 10px 30px rgba(0, 53, 53, 0.15);
+}
+
+.about-page caption {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    color: var(--dark-green);
+    background-color: var(--light-green);
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.about-page th {
+    padding: 1rem;
+    color: var(--cream);
+    background-color: #002626;
+    text-align: left;
+    border-bottom: 3px solid var(--accent-color);
+}
+
+.about-page td {
+    padding: 1rem;
+    color: var(--cream);
+    border-bottom: 1px solid rgba(252, 255, 234, 0.15);
+}
+
+.about-page tr:nth-child(even) {
+    background-color: #174b43;
+}
+
+.about-page tr:hover {
+    background-color: var(--mid-green);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+
+/* footer stuff */
+
+body > footer {
+    width: 100%;
+    padding: 2.5rem 5%;
+    margin-top: 3rem;
+    color: var(--cream);
+    background-color: var(--dark-green);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+body > footer p {
+    max-width: 1000px;
+    margin: 0 auto 1.25rem;
+    color: var(--cream);
+}
+
+body > footer a {
+    display: inline-block;
+    margin: 0.5rem 1rem;
+    color: var(--light-green);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+body > footer a:hover {
+    color: var(--cream);
+    text-decoration: underline;
+}
+
+.footer-text {
+    color: var(--cream);
+    font-size: 14px;
+    font-weight: bold;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+
+/* =========================================================
+   MOBILE STYLES
+   ========================================================= */
+
+
+/* making everything fit on smaller screens */
+
+@media only screen and (max-width: 720px) {
+
+    nav {
+        min-height: 0;
+        padding: 0.75rem 5%;
+        display: block;
+    }
+
+    .logo {
+        width: 170px;
+    }
+
+    .nav-links {
+        gap: 0.8rem 1rem;
+        margin-top: 0.75rem;
+        padding-right: 80px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links li a {
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        position: absolute;
+        top: 0.75rem;
+        right: 5%;
+        padding: 0.6rem 1.2rem;
+    }
+
+    main {
+        padding: 150px 5% 2rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.7rem;
+    }
+
+
+    /* home page mobile */
+
+    .thumbnail {
+        min-height: 450px;
+        object-fit: cover;
+    }
+
+    .overlay-heading {
+        top: 20%;
+        left: 8%;
+        right: 8%;
+        font-size: 2.5rem;
+    }
+
+    .start {
+        top: 60%;
+        left: 8%;
+        padding: 0.6rem 1.3rem;
+    }
+
+    .description {
+        height: auto;
+        min-height: 400px;
+        padding: 3rem 8%;
+    }
+
+    .circle1,
+    .circle2 {
+        display: none;
+    }
+
+    #description-text-block,
+    #mission-text-block {
+        max-width: 100%;
+    }
+
+    #mission-text-block {
+        margin-right: 0;
+        text-align: left;
+    }
+
+    .mission-banner {
+        min-height: 400px;
+        padding: 3rem 8%;
+    }
+
+    .features-section,
+    .education-section {
+        padding: 3rem 5%;
+    }
+
+    .features-section .section-title,
+    .education-section .section-title {
+        font-size: 2rem;
+    }
+
+    .feature-card,
+    .education-card {
+        padding: 1.5rem;
+    }
+
+    .table-container {
+        margin: 2rem auto;
+        border-radius: 12px;
+    }
+
+    .pricing-table {
+        min-width: 650px;
+    }
+
+
+    /* about page mobile */
+
+    .about-page > section:first-child {
+        padding: 1.5rem;
+    }
+
+    .contribution-card {
+        width: 100%;
+    }
+
+    .about-page > section:first-child > ul > li {
+        padding: 1.5rem;
+    }
+
+    .about-page > section:first-child > ul > li > ul {
+        gap: 1.5rem;
+    }
+
+    figure > img {
+        max-width: 100%;
+    }
+
+    .about-page table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .about-page th,
+    .about-page td {
+        padding: 0.8rem;
+    }
+
+
+    /* jobs page mobile */
+
+    main > section {
+        padding: 1.5rem;
+    }
+
+    main > section h2 {
+        font-size: 1.35rem;
+    }
+
+    aside {
+        padding: 1.25rem;
+    }
+
+
+    /* apply page mobile */
+
+    main > section:has(form) {
+        padding: 1.5rem;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    select,
+    textarea {
+        max-width: 100%;
+    }
+
+    form button {
+        width: 100%;
+        margin: 0.4rem 0;
+    }
+
+
+    /* footer mobile */
+
+    body > footer {
+        padding: 2rem 5%;
+    }
+
+    body > footer a {
+        display: block;
+        margin: 0.75rem 0;
+    }
+}
