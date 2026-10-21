@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/includes/db.php';
-require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . 'functions.php';
 
 $pageTitle   = 'Work at MoneyMaster';
 $currentPage = 'jobs.php';
@@ -24,7 +24,7 @@ foreach ($stmt as $row) {
     $items[$row['job_id']][$row['type']][] = $row['content'];
 }
 
-include __DIR__ . '/includes/header.php';
+include __DIR__ . 'header.inc';
 ?>
     <main>
       <h1><?= e($pageTitle) ?></h1>
@@ -61,4 +61,4 @@ include __DIR__ . '/includes/header.php';
       </section>
       <?php endforeach; ?>
     </main>
-<?php include __DIR__ . '/includes/footer.php'; ?>
+<?php include __DIR__ . 'footer.inc'; ?>
