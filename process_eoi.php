@@ -1,4 +1,4 @@
-?php
+<?php
 
 // block direct URL access - only allow the form to post here
 if ($_SERVER["REQUEST_METHOD"] != "POST" || !isset($_POST["jobref"])) {
