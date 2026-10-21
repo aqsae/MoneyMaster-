@@ -26,20 +26,6 @@ if (isset($old["jobref"])) {
 }
 
 $old_skills = isset($old["skills"]) ? $old["skills"] : array();
-
-$jobs = array();
-require_once "settings.php";
-mysqli_report(MYSQLI_REPORT_OFF);
-$conn = @mysqli_connect($host, $user, $pwd, $sql_db);
-if ($conn) {
-    $result = mysqli_query($conn, "SELECT ref, title FROM jobs ORDER BY title");
-    if ($result) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            $jobs[] = $row;
-        }
-    }
-    mysqli_close($conn);
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -101,20 +87,10 @@ if ($conn) {
                 <h2>Job Details</h2>
 
                 <p>
-                    <label for="jobref">Job reference number:</label>
-                    <?php if (count($jobs) > 0) { ?>
-                        <select id="jobref" name="jobref" required>
-                            <option value="" disabled <?php if ($selected_ref == "") echo "selected"; ?>>Select a job</option>
-                            <?php foreach ($jobs as $job) { ?>
-                                <option value="<?php echo htmlspecialchars($job["ref"]); ?>" <?php if ($selected_ref == $job["ref"]) echo "selected"; ?>>
-                                    <?php echo htmlspecialchars($job["title"] . " (" . $job["ref"] . ")"); ?>
-                                </option>
-                            <?php } ?>
-                        </select>
-                    <?php } else { ?>
-                        <input type="text" id="jobref" name="jobref" pattern="[A-Za-z0-9]{6}" title="Exactly 6 letters or numbers" maxlength="6" minlength="6"
-                            value="<?php echo htmlspecialchars($selected_ref, ENT_QUOTES, "UTF-8", false); ?>" required>
-                    <?php } ?>
+                    <label for="jobref">Job reference number (6 alphanumeric characters):</label>
+                    <input type="text" id="jobref" name="jobref" pattern="[A-Za-z0-9]{6}" maxlength="6" minlength="6"
+                        title="Exactly 6 letters or numbers"
+                        value="<?php echo htmlspecialchars($selected_ref, ENT_QUOTES, "UTF-8", false); ?>" required>
                     <?php show_error($errors, "jobref"); ?>
                 </p>
 
