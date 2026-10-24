@@ -822,6 +822,106 @@ button[type="reset"]:hover {
 
 
 /* =========================================================
+   MANAGE PAGE
+   ========================================================= */
+
+
+/* message box for results like "EOI deleted" */
+
+.manage-message {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--pale-green);
+    border-left: 5px solid var(--accent-color);
+}
+
+
+/* lets the table scroll sideways on small screens */
+
+.manage-table-wrap {
+    overflow-x: auto;
+}
+
+
+/* the results table */
+
+.manage-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--cream);
+}
+
+
+/* table headings and cells */
+
+.manage-table th,
+.manage-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--soft-green);
+}
+
+.manage-table th {
+    color: var(--cream);
+    background-color: var(--dark-green);
+}
+
+
+/* delete form: warning text above, tick box beside the button */
+
+.confirm-text {
+    margin: 1rem 0 0.5rem;
+}
+
+.confirm-text label {
+    font-weight: normal;
+}
+
+.delete-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.delete-row input[type="checkbox"] {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0;
+    accent-color: #b3261e;
+    cursor: pointer;
+}
+
+
+/* red button because deleting can't be undone */
+
+.delete-row button {
+    width: auto;
+    margin: 0;
+    padding: 0.7rem 1.75rem;
+    border: none;
+    border-radius: 20px;
+    color: #ffffff;
+    background-color: #b3261e;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(179, 38, 30, 0.3);
+    transition: background-color 0.2s, transform 0.2s, opacity 0.2s;
+}
+
+.delete-row button:hover {
+    background-color: #8c1d17;
+    transform: translateY(-1px);
+}
+
+
+/* button looks faded until the box is ticked */
+
+.delete-row:has(input:not(:checked)) button {
+    opacity: 0.5;
+    box-shadow: none;
+}
+
+
+/* =========================================================
    ABOUT PAGE
    ========================================================= */
 
