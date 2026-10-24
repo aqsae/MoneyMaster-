@@ -139,6 +139,8 @@ nav {
 }
 
 .btn {
+    display: inline-block;
+    text-decoration: none;
     padding: 0.8rem 2rem;
     border-radius: 20px;
     font-size: 1rem;
@@ -826,6 +828,31 @@ button[type="reset"]:hover {
    ========================================================= */
 
 
+/* manage page uses the full width so the whole table fits */
+
+.manage-page > section:has(form) {
+    max-width: none;
+}
+
+
+/* logged in bar above the forms */
+
+.manage-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    background-color: var(--soft-green);
+}
+
+.manage-bar a {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+
 /* message box for results like "EOI deleted" */
 
 .manage-message {
@@ -864,6 +891,37 @@ button[type="reset"]:hover {
 .manage-table th {
     color: var(--cream);
     background-color: var(--dark-green);
+}
+
+
+/* small status dropdown and update button inside the table */
+
+.manage-table {
+    font-size: 0.9rem;
+}
+
+.manage-table th,
+.manage-table td {
+    padding: 0.6rem;
+}
+
+.manage-table form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.manage-table select {
+    width: auto;
+    padding: 0.35rem;
+    font-size: 0.9rem;
+}
+
+.manage-table button {
+    width: auto;
+    margin: 0;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.85rem;
 }
 
 
