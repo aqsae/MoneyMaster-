@@ -12,3 +12,15 @@ function renderList(string $tag, array $items): void {
     }
     echo "</$tag>\n";
 }
+
+// counts bytes and not unicode characters so non-ASCII text in our website will be included and the jobs.php can call it
+function excerpt(string $text, int $limit = 180): string
+{
+    $text = trim($text);
+
+    if (strlen($text) <= $limit) {
+        return $text;
+    }
+
+    return rtrim(substr($text, 0, $limit)) . '...';
+}
