@@ -49,8 +49,7 @@ foreach ($stmt as $row) {
     <link rel="stylesheet" href="styles/styles.css?v=2">
 </head>
 <body>
-<?php> include __DIR__ . '/header.inc';?>
-
+<?php include __DIR__ . '/header.inc'; ?>
 <main>
     <h1><?= e($pageTitle) ?></h1>
 
