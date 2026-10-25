@@ -38,63 +38,96 @@ foreach ($stmt as $row) {
     $items[$row['job_id']][$row['type']][] = $row['content'];
 }
 
-include __DIR__ . '/header.inc';
+
 ?>
-    <main>
-      <h1><?= e($pageTitle) ?></h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= e($pageTitle) ?></title>
+    <link rel="stylesheet" href="styles/styles.css?v=2">
+</head>
+<body>
+<?php> include __DIR__ . '/header.inc';?>
 
-      <aside>Our hiring Process
+<main>
+    <h1><?= e($pageTitle) ?></h1>
+
+    <aside>
+        <h2>Our Hiring Process</h2>
         <ol>
-          <?php foreach ($hiringProcess as $step): ?>
-          <li><?= e($step) ?></li>
-          <?php endforeach; ?>
+            <?php foreach ($hiringProcess as $step): ?>
+                <li><?= e($step) ?></li>
+            <?php endforeach; ?>
         </ol>
-      </aside>
+    </aside>
 
-      <form class="job-search" action="jobs.php" method="get" role="search">
+    <form class="job-search" action="jobs.php" method="get" role="search">
         <label for="q">Search jobs</label>
-        <input type="search" id="q" name="q" value="<?= e($search) ?>" placeholder="e.g. engineer, AML, FCA8B1">
+        <input type="search" id="q" name="q"
+               value="<?= e($search) ?>"
+               placeholder="e.g. engineer, AML, FCA8B1">
         <button type="submit" class="btn">Search</button>
+
         <?php if ($search !== ''): ?>
-        <a href="jobs.php">Clear</a>
+            <a href="jobs.php">Clear</a>
         <?php endif; ?>
-      </form>
+    </form>
 
-      <?php if ($search !== ''): ?>
-      <p class="search-summary"><?= count($jobs) ?> result<?= count($jobs) === 1 ? '' : 's' ?> for &ldquo;<?= e($search) ?>&rdquo;</p>
-      <?php endif; ?>
+    <?php if ($search !== ''): ?>
+        <p class="search-summary">
+            <?= count($jobs) ?> result<?= count($jobs) === 1 ? '' : 's' ?>
+            for &ldquo;<?= e($search) ?>&rdquo;
+        </p>
+    <?php endif; ?>
 
-      <?php if (!$jobs && $search !== ''): ?>
-      <p>No jobs match your search. Try a different keyword.</p>
-      <?php elseif (!$jobs): ?>
-      <p>There are no open positions right now. Please check back soon.</p>
-      <?php endif; ?>
+    <?php if (!$jobs && $search !== ''): ?>
+        <p>No jobs match your search. Try a different keyword.</p>
+    <?php elseif (!$jobs): ?>
+        <p>There are no open positions right now. Please check back soon.</p>
+    <?php endif; ?>
 
-      <?php foreach ($jobs as $job): ?>
-      <?php $list = $items[$job['id']] ?? []; ?>
-      <section>
-        <details<?= $search !== '' ? ' open' : '' ?>>
-          <summary>
-            <h2><?= e($job['title']) ?></h2>
-            <p class="job-meta">Ref: <?= e($job['ref']) ?> | Salary: $<?= number_format((int)$job['salary_min']) ?>-$<?= number_format((int)$job['salary_max']) ?></p>
-            <p class="job-brief"><?= e(excerpt($job['description'])) ?></p>
-            <span class="job-toggle" aria-hidden="true"></span>
-          </summary>
+    <?php foreach ($jobs as $job): ?>
+        <?php $list = $items[$job['id']] ?? []; ?>
 
-          <p class="job-desc"><?= e($job['description']) ?></p>
+        <section>
+            <details<?= $search !== '' ? ' open' : '' ?>>
+                <summary>
+                    <h2><?= e($job['title']) ?></h2>
+                    <p class="job-meta">
+                        Ref: <?= e($job['ref']) ?> |
+                        Salary: $<?= number_format((int)$job['salary_min']) ?> -
+                        $<?= number_format((int)$job['salary_max']) ?>
+                    </p>
+                    <p class="job-brief">
+                        <?= e(excerpt($job['description'])) ?>
+                    </p>
+                    <span class="job-toggle" aria-hidden="true"></span>
+                </summary>
 
-          <h3>Key Responsibilities</h3>
-<?php renderList('ol', $list['responsibility'] ?? []); ?>
+                <p class="job-desc"><?= e($job['description']) ?></p>
 
-          <h3>Essential Requirements</h3>
-<?php renderList('ul', $list['essential'] ?? []); ?>
+                <h3>Key Responsibilities</h3>
+                <?php renderList('ol', $list['responsibility'] ?? []); ?>
 
-          <h3>Preferable Requirements</h3>
-<?php renderList('ul', $list['preferable'] ?? []); ?>
+                <h3>Essential Requirements</h3>
+                <?php renderList('ul', $list['essential'] ?? []); ?>
 
-          <a class="btn apply-btn" href="apply.php?ref=<?= urlencode($job['ref']) ?>" aria-label="Apply for <?= e($job['title']) ?>">Apply now</a>
-        </details>
-      </section>
-      <?php endforeach; ?>
-    </main>
+                <h3>Preferable Requirements</h3>
+                <?php renderList('ul', $list['preferable'] ?? []); ?>
+
+                <a class="btn apply-btn"
+                   href="apply.php?ref=<?= urlencode($job['ref']) ?>"
+                   aria-label="Apply for <?= e($job['title']) ?>">
+                    Apply now
+                </a>
+            </details>
+        </section>
+    <?php endforeach; ?>
+</main>
+
 <?php include __DIR__ . '/footer.inc'; ?>
+
+</body>
+</html>
