@@ -11,9 +11,12 @@ function old_value($old, $field) {
     return htmlspecialchars($value, ENT_QUOTES, "UTF-8", false);
 }
 
-function show_error($errors, $field) {
+function show_error($errors, $field)
+{
     if (isset($errors[$field])) {
-        echo '<span class="field-error">' . $errors[$field] . '</span>';
+        echo '<span class="field-error">'
+            . htmlspecialchars((string)$errors[$field], ENT_QUOTES, 'UTF-8')
+            . '</span>';
     }
 }
 
