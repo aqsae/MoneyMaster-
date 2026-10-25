@@ -656,6 +656,262 @@ aside ol li::marker {
 }
 
 
+/* job search bar */
+
+.job-search {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.job-search label {
+    width: 100%;
+    margin: 0;
+}
+
+.job-search input[type="search"] {
+    flex: 1 1 250px;
+    max-width: 400px;
+    padding: 0.75rem;
+    border: 1.5px solid var(--mid-green);
+    border-radius: 8px;
+    color: var(--dark-green);
+    background-color: var(--cream);
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.job-search input[type="search"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(72, 139, 60, 0.15);
+}
+
+.job-search a {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+
+/* search results count */
+
+.search-summary {
+    color: var(--muted);
+    font-style: italic;
+}
+
+
+/* clickable job card header */
+
+main > section summary {
+    position: relative;
+    padding-right: 2.5rem;
+    list-style: none;
+    cursor: pointer;
+}
+
+main > section summary::-webkit-details-marker {
+    display: none;
+}
+
+main > section summary h2 {
+    margin-top: 0;
+}
+
+
+/* plus and minus sign to open and close a job */
+
+.job-toggle::after {
+    content: "+";
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: var(--accent-color);
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+details[open] .job-toggle::after {
+    content: "−";
+}
+
+
+/* ref and salary line */
+
+.job-meta {
+    font-size: 0.875rem;
+    color: var(--mid-green);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+
+/* short preview, hidden once the job is opened */
+
+.job-brief {
+    color: var(--text);
+    margin-bottom: 0;
+}
+
+details[open] .job-brief {
+    display: none;
+}
+
+
+/* full description */
+
+.job-desc {
+    color: var(--text);
+    font-size: 0.975rem;
+    margin-bottom: 1.5rem;
+    max-width: 68ch;
+}
+
+
+/* apply button */
+
+.apply-btn {
+    margin-top: 1.5rem;
+}
+
+
+/* search box and button use the page font instead of the browser default */
+
+.job-search input[type="search"],
+.job-search button {
+    font-family: inherit;
+}
+
+
+/* message shown when there are no jobs or no search results */
+
+.no-results {
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    border-left: 5px solid var(--accent-color);
+    border-radius: 12px;
+    color: var(--text);
+    background-color: var(--pale-green);
+}
+
+
+/* shows the job header can be clicked */
+
+main > section summary:hover h2,
+main > section summary:hover .job-toggle::after {
+    color: var(--accent-color);
+}
+
+main > section summary:focus {
+    outline: none;
+}
+
+main > section summary:focus-visible {
+    outline: 3px solid var(--accent-color);
+    outline-offset: 6px;
+    border-radius: 8px;
+}
+
+
+/* small gap between the job header and the details once it is opened */
+
+details[open] > summary {
+    margin-bottom: 1rem;
+}
+
+
+/* jobs page restyle: pale background, white job cards, serif titles */
+
+body.jobs-page {
+    background-color: var(--pale-green);
+}
+
+/* same logo size as the apply page */
+.jobs-page .logo {
+    width: 260px;
+}
+
+/* only the page content uses Inter so the header and footer match the other pages */
+.jobs-page main {
+    font-family: "Inter", Helvetica, Arial, sans-serif;
+}
+
+.jobs-page .job-search label {
+    font-weight: 500;
+    font-size: 1.05rem;
+}
+
+.jobs-page .job-search input[type="search"] {
+    flex: 1 1 250px;
+    max-width: none;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius);
+    background-color: var(--white);
+    font-size: 1.1rem;
+}
+
+.jobs-page .job-search .btn {
+    padding: 0.9rem 2.5rem;
+}
+
+.jobs-page main > section {
+    padding: 3rem 3.5rem;
+    border-radius: 10px;
+    background-color: var(--white);
+    box-shadow: none;
+}
+
+.jobs-page main > section h2 {
+    font-family: "Playfair Display", Georgia, serif;
+    font-size: 1.9rem;
+    color: var(--mid-green);
+    margin-bottom: 0.75rem;
+}
+
+.jobs-page main > section summary {
+    padding-right: 4rem;
+}
+
+.jobs-page .job-meta {
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+}
+
+.jobs-page .job-brief,
+.jobs-page .job-desc {
+    color: #2a2a2a;
+    font-size: 1rem;
+    line-height: 1.75;
+    max-width: 68ch;
+}
+
+
+/* plus sign inside an outlined circle */
+
+.jobs-page .job-toggle::after {
+    top: 0.25rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1.5px solid var(--mid-green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--mid-green);
+    font-size: 1.3rem;
+    font-weight: 500;
+    line-height: 1;
+}
+
+.jobs-page main > section summary:hover .job-toggle::after {
+    border-color: var(--accent-color);
+}
+
+
 /* =========================================================
    APPLY PAGE
    ========================================================= */
@@ -1540,6 +1796,24 @@ body > footer a:hover {
 
     aside {
         padding: 1.25rem;
+    }
+
+    /* keeps the search and apply buttons in place, only the nav button moves */
+
+    main .btn {
+        position: static;
+    }
+
+    .job-search input[type="search"] {
+        max-width: 100%;
+    }
+
+    .jobs-page main > section {
+        padding: 1.75rem 1.5rem;
+    }
+
+    .jobs-page main > section h2 {
+        font-size: 1.5rem;
     }
 
 
