@@ -46,9 +46,12 @@ foreach ($stmt as $row) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($pageTitle) ?></title>
-    <link rel="stylesheet" href="styles/styles.css?v=2">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap">
+    <link rel="stylesheet" href="styles/styles.css?v=3">
 </head>
-<body>
+<body class="jobs-page">
 <?php include __DIR__ . '/header.inc'; ?>
 <main>
     <h1><?= e($pageTitle) ?></h1>
@@ -82,9 +85,9 @@ foreach ($stmt as $row) {
     <?php endif; ?>
 
     <?php if (!$jobs && $search !== ''): ?>
-        <p>No jobs match your search. Try a different keyword.</p>
+        <p class="no-results">No jobs match your search. Try a different keyword.</p>
     <?php elseif (!$jobs): ?>
-        <p>There are no open positions right now. Please check back soon.</p>
+        <p class="no-results">There are no open positions right now. Please check back soon.</p>
     <?php endif; ?>
 
     <?php foreach ($jobs as $job): ?>
@@ -96,8 +99,7 @@ foreach ($stmt as $row) {
                     <h2><?= e($job['title']) ?></h2>
                     <p class="job-meta">
                         Ref: <?= e($job['ref']) ?> |
-                        Salary: $<?= number_format((int)$job['salary_min']) ?> -
-                        $<?= number_format((int)$job['salary_max']) ?>
+                        Salary: $<?= number_format((int)$job['salary_min']) ?>-$<?= number_format((int)$job['salary_max']) ?>
                     </p>
                     <p class="job-brief">
                         <?= e(excerpt($job['description'])) ?>
