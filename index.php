@@ -19,7 +19,7 @@
 </head>
 
 <body>
-  <?php include 'includes/header.php'; ?>
+  <?php include '/header.php'; ?>
 
     <div class="image-container">
         <img src="images/thumbnail.jpg" alt="Moneymaster Preview" class="thumbnail">
@@ -157,7 +157,7 @@
 
     </main>
 
-<?php include 'includes/footer.php'; ?>
+<?php include '/footer.php'; ?>
 
 </body>
 
