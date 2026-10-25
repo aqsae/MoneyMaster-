@@ -19,7 +19,7 @@
 </head>
 
 <body>
-<?php include __DIR__ . '/header.php'; ?>
+<?php include __DIR__ . '/header.inc'; ?>
 
     <div class="image-container">
         <img src="images/thumbnail.jpg" alt="Moneymaster Preview" class="thumbnail">
@@ -157,7 +157,7 @@
 
     </main>
 
-<?php include __DIR__ . '/footer.php'; ?>
+<?php include __DIR__ . '/footer.inc'; ?>
 </body>
 
 </html>
