@@ -10,11 +10,13 @@ if ($_SERVER["REQUEST_METHOD"] != "POST" || !isset($_POST["jobref"])) {
 require_once "eoi_options.php";
 
 // sanitise input: trim, strip slashes, escape html
-function sanitise_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
+function sanitise_input($data)
+{
+    if (!is_string($data)) {
+        return '';
+    }
+
+    return trim($data);
 }
 
 // get the form values (empty string if missing)
@@ -268,7 +270,7 @@ if ($conn) {
         <?php if ($eoi_number > 0) { ?>
             <h1>Application Received</h1>
             <section>
-                <p>Thank you, <?php echo $firstname; ?>. Your application for job <?php echo $jobref; ?> has been submitted.</p>
+                <p> Thank you, <?= htmlspecialchars($firstname, ENT_QUOTES, 'UTF-8') ?>. Your application for job <?= htmlspecialchars($jobref, ENT_QUOTES, 'UTF-8') ?> has been submitted. </p>
                 <p>Your Expression of Interest number is <strong><?php echo $eoi_number; ?></strong>. Please keep it for your records.</p>
                 <p><a href="index.php">Back to Home</a></p>
             </section>
