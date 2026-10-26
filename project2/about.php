@@ -1,3 +1,28 @@
+<?php
+require_once __DIR__ . '/db.php';
+
+$teamResult = mysqli_query(
+    $conn,
+    "SELECT * FROM about_team LIMIT 1"
+);
+$team = mysqli_fetch_assoc($teamResult);
+
+$membersResult = mysqli_query(
+    $conn,
+    "SELECT * FROM about_members ORDER BY member_id"
+);
+
+$quotesResult = mysqli_query(
+    $conn,
+    "SELECT name, quote FROM about_members ORDER BY member_id"
+);
+
+$factsResult = mysqli_query(
+    $conn,
+    "SELECT * FROM about_member_facts ORDER BY fact_id"
+);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,111 +45,80 @@
 <?php include __DIR__ . '/header.inc'; ?>
 
 <main class="about-page">
-  <section>
+
+	<section>
     <h1>Our Team</h1>
-    <p>Welcome to our team! We are a group of dedicated students passionate about what we do. </p>
+
+    <p><?= htmlspecialchars($team['intro']) ?></p>
+
+    <h2 class="team-name">
+        <?= htmlspecialchars($team['team_name']) ?>
+    </h2>
 
     <ul>
-     <li>
-        <span>What we are called : </span>  
-        <h2 class="team-name">The Moneymasters</h2>
-        <ul>
-          <li>
-            <span>Tutorial Day :</span>
-            <strong>Wednesday</strong>
-          </li>
-         <li>
-            <span>Tutorial Time</span>
-            <strong>12:30 PM to 2:30 PM</strong>
-          </li>
-        </ul>
-      </li>
-   </ul>
-  </section>
+        <li>
+            <span>Tutorial Day:</span>
+            <strong><?= htmlspecialchars($team['class_day']) ?></strong>
+        </li>
+
+        <li>
+            <span>Tutorial Time:</span>
+            <strong><?= htmlspecialchars($team['class_time']) ?></strong>
+        </li>
+
+        <li>
+            <span>Tutor:</span>
+            <strong><?= htmlspecialchars($team['tutor']) ?></strong>
+        </li>
+    </ul>
+</section>
  
-        
- <section class="contributions-section">
+    
+<section class="contributions-section">
     <h1 class="section-title">Member Contributions</h1>
 
     <dl class="contributions-list">
-    
-      <div class="contribution-card">
-        <dt class="member-header">
-         <span class="member-name">Aqsa Shiyana Baanu</span>
-          <span class="student-id">ID: 106512925</span>
-        </dt>
-        <dd class="member-details">
-         Developed the Home page, including the logo, styles and navigation bar implemented across all pages. Did header.inc, footer.inc, logout.php, login.php, debugging and presentation.
-       </dd>
-      </div>
+        <?php while ($member = mysqli_fetch_assoc($membersResult)): ?>
+            <div class="contribution-card">
+                <dt class="member-header">
+                    <span class="member-name">
+                        <?= htmlspecialchars($member['name']) ?>
+                    </span>
 
-     <div class="contribution-card">
-       <dt class="member-header">
-          <span class="member-name">Sukhmanpreet Kaur</span>
-         <span class="student-id">ID: 106390891</span>
-        </dt>
-       <dd class="member-details">
-         Developed the About page and eoi_options.php as well as proofread and edited side and presentation slides.
-        </dd>
-      </div>
+                    <span class="student-id">
+                        ID: <?= htmlspecialchars($member['student_id']) ?>
+                    </span>
+                </dt>
 
-     <div class="contribution-card">
-        <dt class="member-header">
-         <span class="member-name">Noah Puglia</span>
-          <span class="student-id">ID: 105925250</span>
-        </dt>
-       <dd class="member-details">
-         Developed the Jobs page, moneymaster_db.sql, db.php settings.php, functions.php as well as tested out the website and fixed bugs. He was behind the creation of the SQL database and added a search function.
-        </dd>
-     </div>
+                <dd class="member-details">
+                    <strong>Part 1:</strong>
+                    <?= nl2br(htmlspecialchars($member['part1_work'])) ?>
 
-      <div class="contribution-card">
-       <dt class="member-header">
-          <span class="member-name">Enricko Hartanto</span>
-          <span class="student-id">ID: 106705152</span>
-        </dt>
-        <dd class="member-details">
-        Developed the Apply form, organised files and created process_eoi, manage.php and the Expression of Interest table for the database, also debugged and fixed errors and added a search bar to the Apply page.
+                    <br><br>
 
-        </dd>
-     </div> 
+                    <strong>Part 2:</strong>
+                    <?= nl2br(htmlspecialchars($member['part2_work'])) ?>
+                </dd>
+            </div>
+        <?php endwhile; ?>
     </dl>
-  </section>
-        
-  <section>
+</section>
+
+ <section>
     <h1>What our team has to say</h1>
-    <h1 class="name">Aqsa Shiyana Baanu</h1>
-    <blockquote>
-      <p>"என்ன செய்வது என்று தெரியாத பொழுது என்ன செய்கிறாயோ அதுதான் உன் வெற்றிக்கு வழிவகுக்கும்"</p>
-     <footer>
-        <span>English:</span> "When you don't know what to do, what you do will lead to your success."
-     </footer>
-    </blockquote>
 
-    <h1 class="name">Sukhmanpreet Kaur</h1>
-    <blockquote>
-      <p>"ਮਨੁ ਜੀਤੈ ਜਗੁ ਜੀਤੁ"</p>
-      <footer>
-       <span>English:</span> "One who conquers the mind conquers the world."
-     </footer>
-   </blockquote>
-        
-    <h1 class="name">Noah Puglia</h1>
-    <blockquote>
-      <p>"Si votre nom ne figure pas dans le chapeau, comment pouvez-vous espérer être tiré au sort ? C'est impossible." </p>
-      <footer>
-          <span>English:</span> "If your name is not in the hat, how can you hope to be drawn? It's impossible."
-        </footer>
-   </blockquote>
+    <?php while ($person = mysqli_fetch_assoc($quotesResult)): ?>
+        <h2 class="name">
+            <?= htmlspecialchars($person['name']) ?>
+        </h2>
 
-    <h1 class="name">Enricko Hartanto</h1>
-    <blockquote>
-     <p>"Gantungkan cita-citamu setinggi langit! Bermimpilah setinggi langit. Jika engkau jatuh, engkau akan jatuh di antara bintang-bintang."</p>
-      <footer>
-       <span>English:</span> "Hang your dreams as high as the sky! Dream as high as the sky. If you fall, you'll fall among the stars."
-      </footer>
-   </blockquote>
-  </section>
+        <blockquote>
+            <p>
+                <?= htmlspecialchars($person['quote']) ?>
+            </p>
+        </blockquote>
+    <?php endwhile; ?>
+</section>
         
 <figure>
     <img src="images/group.png" alt="Our team members">
@@ -132,54 +126,35 @@
 </figure>
 
     
-  <table>
-    <caption style="font-size: 18px; font-weight: bold; color: #0f4c5c; background-color: #d1e7cc; padding: 8px 16px; border-radius: 6px; margin-bottom: 15px;
-     letter-spacing: 1px;"> Fun Facts about team members</caption> <!--Inline style css -->
-    <tr>
-      <th>Name</th>
-      <th>Favorite App/Technology to use</th>
-      <th>Favorite Book</th>
-      <th>Hobby</th>
-      <th>Dream job</th>
-      <th>Comments about the team</th>
-    </tr>
 
-   <tr>
-      <td>Aqsa Shiyana Baanu</td>
-      <td>Pinterest</td>
-      <td>Giovanni's Room</td>
-      <td>Drawing</td>
-      <td>Embedded Systems Engineer</td>
-      <td>Everyone is very kind and respectful.</td>
-   </tr>
+<table>
+    <caption>Fun Facts about team members</caption>
 
-    <tr>
-      <td>Sukhmanpreet Kaur</td>
-     <td>Youtube</td>
-     <td>Can't Hurt Me</td>
-     <td>Singing</td>
-      <td>AI Engineer</td>
-      <td>Everyone is very helpful and supportive.</td>
-    </tr>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Favorite App/Technology to use</th>
+            <th>Favorite Book</th>
+            <th>Hobby</th>
+            <th>Dream job</th>
+            <th>Comments about the team</th>
+        </tr>
+    </thead>
 
-    <tr>
-      <td>Noah Puglia</td>
-      <td>PlayStation 3</td>
-      <td>Clear and Present Danger</td>
-      <td>Playing drums</td>
-      <td>Cybersecurity Architect</td>
-      <td>We communicate well.</td>
-    </tr>
+    <tbody>
+        <?php while ($fact = mysqli_fetch_assoc($factsResult)): ?>
+            <tr>
+                <td><?= htmlspecialchars($fact['member_name']) ?></td>
+                <td><?= htmlspecialchars($fact['favorite_app']) ?></td>
+                <td><?= htmlspecialchars($fact['favorite_book']) ?></td>
+                <td><?= htmlspecialchars($fact['hobby']) ?></td>
+                <td><?= htmlspecialchars($fact['dream_job']) ?></td>
+                <td><?= htmlspecialchars($fact['team_comment']) ?></td>
+            </tr>
+        <?php endwhile; ?>
+    </tbody>
+</table>
 
-    <tr>
-      <td>Enricko Hartanto</td>
-      <td>Tiktok</td>
-      <td>The Setting Sun</td>
-      <td>Swimming</td>
-      <td>Data Analyst</td>
-      <td>Everyone is very easy to talk to.</td>
-    </tr>
-  </table>
   </main> 
 
   <?php include __DIR__ . '/footer.inc'; ?>
