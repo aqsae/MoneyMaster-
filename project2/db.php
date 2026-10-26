@@ -1,11 +1,11 @@
 
 <?php
 
-// Load the database settings
+// loads database settings
 require_once __DIR__ . '/settings.php';
 
 try {
-    // Connect to the database
+    // connects to the database!
     $pdo = new PDO(
         "mysql:host=$host;dbname=$sql_db;charset=utf8mb4",
         $user,
@@ -18,7 +18,7 @@ try {
     );
 
 } catch (PDOException $ex) {
-    // Log the error without showing details to users
+    // logs the error without showing details to users
     error_log('Database connection failed: ' . $ex->getMessage());
 
     http_response_code(500);
