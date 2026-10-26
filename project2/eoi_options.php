@@ -1,5 +1,6 @@
+
 <?php
-// first digit(s) of the postcode allowed for each state
+// allows postcode starting digits for each state!
 $state_postcodes = array(
     "VIC" => array("3", "8"),
     "NSW" => array("1", "2"),
@@ -11,6 +12,7 @@ $state_postcodes = array(
     "ACT" => array("0", "2")
 );
 
+// skills available for users to select on the form!
 $skill_options = array(
     "budgeting-tools"      => "Budgeting tools development",
     "digital-payments"     => "Digital payments systems",
