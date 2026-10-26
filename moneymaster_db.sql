@@ -198,7 +198,7 @@ VALUES
     'Aqsa Shiyana Baanu',
     '106512925',
     'Developed the Home page, logo, styles and navigation bar implemented across all pages.',
-    'Worked on header.inc, footer.inc, logout.php, login.php, debugging and the presentation.',
+    'Worked on header.inc, footer.inc, logout.php, login.php, debugging, updating database and the presentation.',
     'என்ன செய்வது என்று தெரியாத பொழுது என்ன செய்கிறாயோ அதுதான் உன் வெற்றிக்கு வழிவகுக்கும்'
 ),
 (
@@ -212,13 +212,13 @@ VALUES
     'Noah Puglia',
     '105925250',
     'Developed the Jobs page and database setup.',
-    'Worked on db.php, settings.php, functions.php, testing, bug fixes and the search function.',
+    'Worked on db.php, settings.php, functions.php, testing, bug fixes, updating database and the search function.',
     'Si votre nom ne figure pas dans le chapeau, comment pouvez-vous espérer être tiré au sort ? C''est impossible.'
 ),
 (
     'Enricko Hartanto',
     '106705152',
     'Built the job application page and its form validation.',
-    'Built process_eoi, manage.php and the EOI database functionality, and helped integrate the database.',
+    'Built process_eoi, manage.php and the EOI database functionality and helped integrate the database.',
     'Gantungkan cita-citamu setinggi langit! Bermimpilah setinggi langit. Jika engkau jatuh, engkau akan jatuh di antara bintang-bintang.'
 );
