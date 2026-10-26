@@ -15,7 +15,7 @@
     .logo { width: 260px; height: auto; } /* making the home page sections go full width */ 
      main { max-width: 100%; padding: 0; margin: 0; } /* keeping the big home page image behind the heading */
     .image-container { margin-top: 90px; } </style>
-    <!--<img src="logo.png" class="logo"> -->
+    <!--<img src="../images/logo.png" class="logo"> -->
 </head>
 
 <body>
