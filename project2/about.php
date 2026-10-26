@@ -1,23 +1,28 @@
 <?php
+// grab the database login details and conect
 require_once __DIR__ . '/settings.php';
 $conn = mysqli_connect($host, $user, $pwd, $sql_db);
 
+// get the team info
 $teamResult = mysqli_query(
     $conn,
     "SELECT * FROM about_team LIMIT 1"
 );
 $team = mysqli_fetch_assoc($teamResult);
 
+//get every member for
 $membersResult = mysqli_query(
     $conn,
     "SELECT * FROM about_members ORDER BY member_id"
 );
 
+// get each member's name and quote for the quotes section
 $quotesResult = mysqli_query(
     $conn,
     "SELECT name, quote FROM about_members ORDER BY member_id"
 );
 
+// get the fun facts
 $factsResult = mysqli_query(
     $conn,
     "SELECT * FROM about_member_facts ORDER BY fact_id"
@@ -42,7 +47,8 @@ $factsResult = mysqli_query(
 </head>
 
 <body>
-            
+
+<!-- shared header and nav bar -->
 <?php include __DIR__ . '/header.inc'; ?>
 
 <main class="about-page">
@@ -73,11 +79,12 @@ $factsResult = mysqli_query(
         </li>
     </ul>
 </section>
- 
-    
+
+<!-- one card per member, showing what they did in part 1 and part 2 -->
 <section class="contributions-section">
     <h1 class="section-title">Member Contributions</h1>
 
+	 <!-- loops through each member from the database -->
     <dl class="contributions-list">
         <?php while ($member = mysqli_fetch_assoc($membersResult)): ?>
             <div class="contribution-card">
@@ -105,6 +112,7 @@ $factsResult = mysqli_query(
     </dl>
 </section>
 
+ <!-- each member's quote -->
  <section>
     <h1>What our team has to say</h1>
 
@@ -120,14 +128,15 @@ $factsResult = mysqli_query(
         </blockquote>
     <?php endwhile; ?>
 </section>
-        
+
+<!-- team photo -->
 <figure>
     <img src="../images/group.png" alt="Our team members">
     <figcaption>Our Crew Members</figcaption>
 </figure>
 
     
-
+<!-- fun facts table, one row per member -->
 <table>
     <caption>Fun Facts about team members</caption>
 
@@ -157,7 +166,7 @@ $factsResult = mysqli_query(
 </table>
 
   </main> 
-
+<!-- shared footer -->
   <?php include __DIR__ . '/footer.inc'; ?>
 </body>
 </html>
