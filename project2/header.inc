@@ -1,3 +1,4 @@
+
 <header>
     <nav>
         <a href="index.php">
@@ -13,7 +14,7 @@
         </ul>
 
         <div class="btns">
-            <button class="btn" type="button">Login</button>
+            <a href="login.php" class="btn">Login</a>
         </div>
     </nav>
 </header>
