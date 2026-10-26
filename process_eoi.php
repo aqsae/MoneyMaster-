@@ -1,5 +1,5 @@
 <?php
-session_start();
+session_start(); // needed so we can send errors and the user's answers back to apply.php
 
 // block direct URL access - only allow the form to post here
 if ($_SERVER["REQUEST_METHOD"] != "POST" || !isset($_POST["jobref"])) {
@@ -7,11 +7,12 @@ if ($_SERVER["REQUEST_METHOD"] != "POST" || !isset($_POST["jobref"])) {
     exit();
 }
 
-require_once "eoi_options.php";
+require_once "eoi_options.php"; // the lists of valid states/postcodes and skills
 
 // sanitise input: trim, strip slashes, escape html
 function sanitise_input($data)
 {
+    // if it's not plain text (like someone sending an array instead), just treat it as empty
     if (!is_string($data)) {
         return '';
     }
@@ -20,7 +21,7 @@ function sanitise_input($data)
 }
 
 // get the form values (empty string if missing)
-$jobref      = isset($_POST["jobref"])      ? strtoupper(sanitise_input($_POST["jobref"])) : "";
+$jobref      = isset($_POST["jobref"])      ? strtoupper(sanitise_input($_POST["jobref"])) : ""; // capitals so "eng4a2" still works
 $firstname   = isset($_POST["firstname"])   ? sanitise_input($_POST["firstname"])   : "";
 $lastname    = isset($_POST["lastname"])    ? sanitise_input($_POST["lastname"])    : "";
 $dob         = isset($_POST["dob"])         ? sanitise_input($_POST["dob"])         : "";
@@ -33,6 +34,7 @@ $email       = isset($_POST["email"])       ? sanitise_input($_POST["email"])   
 $phone       = isset($_POST["phone"])       ? sanitise_input($_POST["phone"])       : "";
 $otherskills = isset($_POST["otherskills"]) ? sanitise_input($_POST["otherskills"]) : "";
 
+// skills come in as a list because the checkboxes are named skills[]
 $skills = array();
 if (isset($_POST["skills"]) && is_array($_POST["skills"])) {
     foreach ($_POST["skills"] as $skill) {
@@ -41,7 +43,7 @@ if (isset($_POST["skills"]) && is_array($_POST["skills"])) {
 }
 
 // server-side validation (does not rely on the browser)
-$errors = array();
+$errors = array(); // each error is saved under its field name so apply.php can show it under the right box
 
 if (!preg_match("/^[A-Za-z0-9]{6}$/", $jobref)) {
     $errors["jobref"] = "Job reference number must be exactly 6 letters or numbers.";
@@ -72,6 +74,7 @@ if ($dob == "") {
         $year = $month = $day = 0;
     }
 
+    // checkdate catches fake dates like 31/02/2000
     if (!checkdate((int)$month, (int)$day, (int)$year)) {
         $errors["dob"] = "Date of birth must be a valid date (dd/mm/yyyy).";
     } else {
@@ -79,7 +82,7 @@ if ($dob == "") {
         if ($dob_db > date("Y-m-d")) {
             $errors["dob"] = "Date of birth cannot be in the future.";
         } else {
-            $age = date_diff(date_create($dob_db), date_create("today"))->y;
+            $age = date_diff(date_create($dob_db), date_create("today"))->y; // their age in full years
             if ($age < 15 || $age > 80) {
                 $errors["dob"] = "Applicants must be between 15 and 80 years old.";
             }
@@ -87,6 +90,7 @@ if ($dob == "") {
     }
 }
 
+// still checked here because the radio values can be edited in dev tools
 if (!in_array($gender, array("female", "male", "other"))) {
     $errors["gender"] = "Please select a gender.";
 }
@@ -109,13 +113,14 @@ if (!array_key_exists($state, $state_postcodes)) {
 
 if (!preg_match("/^[0-9]{4}$/", $postcode)) {
     $errors["postcode"] = "Postcode must be exactly 4 digits.";
+// first digit has to match the state, for example, VIC postcodes start with 3 or 8
 } elseif (array_key_exists($state, $state_postcodes) && !in_array($postcode[0], $state_postcodes[$state])) {
     $errors["postcode"] = "Postcode $postcode does not match the state $state.";
 }
 
 if ($email == "") {
     $errors["email"] = "Email address is required.";
-} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) { // email checker
     $errors["email"] = "Email address is not valid.";
 }
 
@@ -126,10 +131,11 @@ if (!preg_match("/^[0-9]{8,12}$/", $phone)) {
 foreach ($skills as $skill) {
     if (!array_key_exists($skill, $skill_options)) {
         $errors["skills"] = "Invalid skill selected.";
-        break;
+        break; // stop after the first bad one so the error only shows once
     }
 }
 
+// they need to tick at least one skill OR write something in other skills
 if (count($skills) == 0 && $otherskills == "") {
     $errors["skills"] = "Please select at least one skill or describe your other skills.";
 }
@@ -141,12 +147,13 @@ $conn = false;
 
 if (count($errors) == 0) {
     require_once "settings.php";
-    mysqli_report(MYSQLI_REPORT_OFF);
+    mysqli_report(MYSQLI_REPORT_OFF); // turn off mysqli crashing so we can show our own error messages
     $conn = @mysqli_connect($host, $user, $pwd, $sql_db);
 
     if (!$conn) {
         $db_error = "Unable to connect to the database.";
     } else {
+        // check the job ref is actually a real job in the jobs table
         $job_check = mysqli_prepare($conn, "SELECT ref FROM jobs WHERE ref = ?");
         if (!$job_check) {
             $db_error = "Unable to check the job reference.";
@@ -162,6 +169,8 @@ if (count($errors) == 0) {
     }
 }
 
+// if anything's wrong, save the errors and their answers in the session and send them back to the form
+// so they don't have to retype everything
 if (count($errors) > 0) {
     if ($conn) {
         mysqli_close($conn);
@@ -209,7 +218,7 @@ if ($conn && $db_error == "") {
     if (!mysqli_query($conn, $create_table)) {
         $db_error = "Unable to create the EOI table.";
     } else {
-        $skills_list = implode(", ", $skills);
+        $skills_list = implode(", ", $skills); // joins the skills into one bit of text, e.g. "budgeting-tools, financial-analysis"
 
         // prepared statement so input can't break the SQL
         $insert = "INSERT INTO eoi (job_ref, first_name, last_name, dob, gender, street_address,
@@ -219,6 +228,7 @@ if ($conn && $db_error == "") {
         if (!$stmt) {
             $db_error = "Unable to save your application.";
         } else {
+            // 13 "s" = 13 values, all strings, in the same order as the columns
             mysqli_stmt_bind_param(
                 $stmt,
                 "sssssssssssss",
@@ -238,7 +248,7 @@ if ($conn && $db_error == "") {
             );
 
             if (mysqli_stmt_execute($stmt)) {
-                $eoi_number = mysqli_insert_id($conn);
+                $eoi_number = mysqli_insert_id($conn); // the EOI number the database just made for this application
             } else {
                 $db_error = "Unable to save your application.";
             }
@@ -270,6 +280,7 @@ if ($conn) {
         <?php if ($eoi_number > 0) { ?>
             <h1>Application Received</h1>
             <section>
+                <?php /* htmlspecialchars so nothing they typed can run as html on this page */ ?>
                 <p> Thank you, <?= htmlspecialchars($firstname, ENT_QUOTES, 'UTF-8') ?>. Your application for job <?= htmlspecialchars($jobref, ENT_QUOTES, 'UTF-8') ?> has been submitted. </p>
                 <p>Your Expression of Interest number is <strong><?php echo $eoi_number; ?></strong>. Please keep it for your records.</p>
                 <p><a href="index.php">Back to Home</a></p>
