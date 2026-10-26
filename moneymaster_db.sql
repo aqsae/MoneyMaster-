@@ -1,4 +1,4 @@
--- MoneyMaster database
+ -- MoneyMaster database
 -- Import via phpMyAdmin (Import tab) or: mysql -u root < moneymaster_db.sql
 -- Creates the moneymaster_db database used by settings.php
 
@@ -85,9 +85,9 @@ INSERT INTO `job_items` (`job_id`, `type`, `content`, `sort_order`) VALUES
 (3, 'preferable', 'Familiarity with credit risk, regulatory compliance, or responsible lending obligations.', 2),
 (3, 'preferable', 'Background in UX research or customer discovery methods.', 3);
 
--- --------------------------------------------------------
+
 -- Expressions of interest (apply.php, process_eoi.php, manage.php)
--- --------------------------------------------------------
+
 
 CREATE TABLE `eoi` (
   `EOInumber`      INT AUTO_INCREMENT PRIMARY KEY,
@@ -115,9 +115,9 @@ INSERT INTO `eoi` (`EOInumber`, `job_ref`, `first_name`, `last_name`, `dob`, `ge
 (5, 'PMX7A3', 'Daniel', 'Lee', '1990-01-30', 'male', '3 Hay St', 'Perth', 'WA', '6000', 'daniel.lee@example.com', '0400444555', '', 'Product roadmaps and stakeholder management', 'Final'),
 (6, 'PMX7A3', 'Emma', 'Brown', '1999-05-09', 'other', '27 Rundle Mall', 'Adelaide', 'SA', '5000', 'emma.brown@example.com', '0400555666', 'budgeting-tools, customer-service', '', 'New');
 
--- --------------------------------------------------------
+
 -- Manager accounts (login.php) - admin / admin, password stored as a hash
--- --------------------------------------------------------
+
 
 CREATE TABLE `users` (
   `id`            INT AUTO_INCREMENT PRIMARY KEY,
@@ -127,3 +127,98 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `username`, `password_hash`) VALUES
 (1, 'admin', '$2y$10$SSCjxKH8vEZI6MVgFmTfyOE6/.NcNe5VYheuFPmqy5xGeUvh6xMiS');
+
+-- about page!!
+
+DROP TABLE IF EXISTS about_member_facts;
+DROP TABLE IF EXISTS about_members;
+DROP TABLE IF EXISTS about_team; -- ensures no duplicates!!
+
+CREATE TABLE IF NOT EXISTS about_member_facts (
+    fact_id INT AUTO_INCREMENT PRIMARY KEY,
+    member_name VARCHAR(100) NOT NULL,
+    favorite_app VARCHAR(100) NOT NULL,
+    favorite_book VARCHAR(100) NOT NULL,
+    hobby VARCHAR(100) NOT NULL,
+    dream_job VARCHAR(100) NOT NULL,
+    team_comment TEXT NOT NULL
+);
+
+INSERT INTO about_member_facts
+(member_name, favorite_app, favorite_book, hobby, dream_job, team_comment)
+VALUES
+('Aqsa Shiyana Baanu', 'Pinterest', 'Giovanni''s Room',
+ 'Drawing', 'Embedded Systems Engineer',
+ 'Everyone is very kind and respectful.'),
+('Sukhmanpreet Kaur', 'YouTube', 'Can''t Hurt Me',
+ 'Singing', 'AI Engineer',
+ 'Everyone is very helpful and supportive.'),
+('Noah Puglia', 'PlayStation 3', 'Clear and Present Danger',
+ 'Playing drums', 'Cybersecurity Architect',
+ 'We communicate well.'),
+('Enricko Hartanto', 'TikTok', 'The Setting Sun',
+ 'Swimming', 'Data Analyst',
+ 'Everyone is very easy to talk to.');
+
+-- About page: team details
+CREATE TABLE IF NOT EXISTS about_team (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    team_name VARCHAR(50) NOT NULL,
+    intro TEXT NOT NULL,
+    class_day VARCHAR(30) NOT NULL,
+    class_time VARCHAR(30) NOT NULL,
+    tutor VARCHAR(50) NOT NULL
+);
+
+INSERT INTO about_team
+(team_name, intro, class_day, class_time, tutor)
+VALUES
+(
+    'The Moneymasters',
+    'Welcome to our team! We are a group of dedicated students passionate about what we do.',
+    'Wednesday',
+    '12:30 PM to 2:30 PM',
+    'Feixue Yan'
+);
+
+-- About page: member contributions and quotes
+CREATE TABLE IF NOT EXISTS about_members (
+    member_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    student_id VARCHAR(12) NOT NULL,
+    part1_work TEXT NOT NULL,
+    part2_work TEXT NOT NULL,
+    quote VARCHAR(500) NOT NULL
+);
+
+INSERT INTO about_members
+(name, student_id, part1_work, part2_work, quote)
+VALUES
+(
+    'Aqsa Shiyana Baanu',
+    '106512925',
+    'Developed the Home page, logo, styles and navigation bar implemented across all pages.',
+    'Worked on header.inc, footer.inc, logout.php, login.php, debugging and the presentation.',
+    'என்ன செய்வது என்று தெரியாத பொழுது என்ன செய்கிறாயோ அதுதான் உன் வெற்றிக்கு வழிவகுக்கும்'
+),
+(
+    'Sukhmanpreet Kaur',
+    '106390891',
+    'Developed the About page.',
+    'Worked on eoi_options.php, proofreading and presentation slides.',
+    'ਮਨੁ ਜੀਤੈ ਜਗੁ ਜੀਤੁ'
+),
+(
+    'Noah Puglia',
+    '105925250',
+    'Developed the Jobs page and database setup.',
+    'Worked on db.php, settings.php, functions.php, testing, bug fixes and the search function.',
+    'Si votre nom ne figure pas dans le chapeau, comment pouvez-vous espérer être tiré au sort ? C''est impossible.'
+),
+(
+    'Enricko Hartanto',
+    '106705152',
+    'Built the job application page and its form validation.',
+    'Built process_eoi, manage.php and the EOI database functionality, and helped integrate the database.',
+    'Gantungkan cita-citamu setinggi langit! Bermimpilah setinggi langit. Jika engkau jatuh, engkau akan jatuh di antara bintang-bintang.'
+);
