@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/settings.php';
+$conn = mysqli_connect($host, $user, $pwd, $sql_db);
 
 $teamResult = mysqli_query(
     $conn,
@@ -31,7 +32,7 @@ $factsResult = mysqli_query(
   <meta name="keywords" content="HTML5, CSS layout" >
   <meta name="author" content="Sukh_man"  >
   <title>About our team</title>
- <link href="styles/styles.css?v=2" rel="stylesheet">   
+ <link href="../styles/styles.css?v=2" rel="stylesheet">   
 	<style> /* small styles just for the about page */ 
     .logo { width: 260px; height: auto; } /* making the team information easier to read */
    .about-page > section:first-child { padding-top: 1rem; } /* this is for the footer text on this page */
@@ -51,24 +52,24 @@ $factsResult = mysqli_query(
 
     <p><?= htmlspecialchars($team['intro']) ?></p>
 
-    <h2 class="team-name">
-        <?= htmlspecialchars($team['team_name']) ?>
-    </h2>
-
     <ul>
         <li>
-            <span>Tutorial Day:</span>
-            <strong><?= htmlspecialchars($team['class_day']) ?></strong>
-        </li>
-
-        <li>
-            <span>Tutorial Time:</span>
-            <strong><?= htmlspecialchars($team['class_time']) ?></strong>
-        </li>
-
-        <li>
-            <span>Tutor:</span>
-            <strong><?= htmlspecialchars($team['tutor']) ?></strong>
+            <span>Team</span>
+            <h2 class="team-name"><?= htmlspecialchars($team['team_name']) ?></h2>
+            <ul>
+                <li>
+                    <span>Tutorial Day</span>
+                    <strong><?= htmlspecialchars($team['class_day']) ?></strong>
+                </li>
+                <li>
+                    <span>Tutorial Time</span>
+                    <strong><?= htmlspecialchars($team['class_time']) ?></strong>
+                </li>
+                <li>
+                    <span>Tutor</span>
+                    <strong><?= htmlspecialchars($team['tutor']) ?></strong>
+                </li>
+            </ul>
         </li>
     </ul>
 </section>
@@ -121,7 +122,7 @@ $factsResult = mysqli_query(
 </section>
         
 <figure>
-    <img src="images/group.png" alt="Our team members">
+    <img src="../images/group.png" alt="Our team members">
     <figcaption>Our Crew Members</figcaption>
 </figure>
 
