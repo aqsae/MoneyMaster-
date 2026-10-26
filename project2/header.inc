@@ -1,7 +1,7 @@
 <header>
     <nav>
         <a href="index.php">
-            <img src="images/logo.png" class="logo" alt="MoneyMaster logo">
+            <img src="../images/logo.png" class="logo" alt="MoneyMaster logo">
         </a>
 
         <ul class="nav-links">
