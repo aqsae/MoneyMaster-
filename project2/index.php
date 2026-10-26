@@ -25,7 +25,7 @@
         <img src="images/thumbnail.jpg" alt="Moneymaster Preview" class="thumbnail">
         <div class="overlay-heading">we've got you.</div>
 
-        <h1><button class="start">Get Started</button></h1>
+<a href="login.php" class="start">Get Started</a>
     </div>
     <div class="description">
         <SECTION id="description-text-block">
