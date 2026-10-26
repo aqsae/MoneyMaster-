@@ -1,5 +1,5 @@
 <?php
-// Shared helpers
+// shared helpers (functions that can be usedacross different php files
 
 function e(string $s): string {
     return htmlspecialchars($s, ENT_QUOTES, 'UTF-8');
