@@ -54,35 +54,102 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="styles/styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="MoneyMaster - HR manager login">
     <meta name="author" content="MoneyMaster Executive Team">
     <title>Login | MoneyMaster</title>
     <style>
-        main > section:has(form) { max-width: 450px; }
-        main > section > p.error {
-            padding: 0.75rem 1rem;
-            margin-bottom: 1rem;
-            border-left: 5px solid #b3261e;
-            border-radius: 8px;
-            background-color: #fdecea;
-            color: #7a1c15;
-            font-weight: bold; }
-        input[type="password"] {
-            width: 100%;
-            max-width: 400px;
-            padding: 0.75rem;
-            border: 1.5px solid var(--mid-green);
-            border-radius: 8px;
-            color: var(--dark-green);
-            background-color: var(--cream);
-            font-size: 1rem; }
-        input[type="password"]:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(72, 139, 60, 0.15); }
+       
+/* login page / form styling */
+
+main > h1 {
+    color: var(--dark-green);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* login form !!! */
+main > section:has(form) {
+    max-width: 450px;
+    margin: 0 auto 3rem;
+    padding: 2.5rem;
+    background-color: var(--soft-green);
+    border: 1px solid var(--light-green);
+    border-top: 5px solid var(--mid-green);
+    border-radius: var(--radius);
+    box-shadow: 0 10px 30px rgba(0, 53, 53, 0.12);
+}
+
+/* username and password labels!! */
+main > section label {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: var(--dark-green);
+    font-weight: bold;
+}
+
+/* login inputs of username and password!! */
+main > section input[type="text"],
+main > section input[type="password"] {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.85rem 1rem;
+    border: 1.5px solid var(--mid-green);
+    border-radius: 8px;
+    background-color: var(--cream);
+    color: var(--dark-green);
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+main > section input[type="text"]:focus,
+main > section input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(72, 139, 60, 0.15);
+}
+
+/* login button */
+main > section button[type="submit"] {
+    width: 100%;
+    padding: 0.85rem;
+    margin-top: 0.5rem;
+    border: 1.5px solid var(--dark-green);
+    border-radius: 20px;
+    background-color: var(--dark-green);
+    color: var(--cream);
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+main > section button[type="submit"]:hover {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+/* error message */
+main > section > p.error {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-left: 5px solid #b3261e;
+    border-radius: 8px;
+    background-color: #fdecea;
+    color: #7a1c15;
+    font-weight: bold;
+}
+
+/* mobile layout for accessibility !!!*/
+@media (max-width: 720px) {
+    main > section:has(form) {
+        padding: 1.5rem;
+    }
+}
+
     </style>
 </head>
 <body>
