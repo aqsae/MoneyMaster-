@@ -36,7 +36,7 @@
                 Our mission is to allow you to take complete control of your financial destiny with Moneymaster.</p>
         </SECTION>
         <div class="circle1">
-            <img src="images/icon1.png" alt="Banking Preview" class="icons" id="icon1">
+            <img src="../images/icon1.png" alt="Banking Preview" class="icons" id="icon1">
         </div>
     </div>
 
@@ -54,7 +54,7 @@
                     every dollar, build sustainable budgets, and scale your personal savings securely.</p>
             </section>
             <div class="circle2">
-                <img src="images/icon2.png" alt="Financial Freedom Preview" class="icons" id="icon2">
+                <img src="../images/icon2.png" alt="Financial Freedom Preview" class="icons" id="icon2">
             </div>
 
         </div>
