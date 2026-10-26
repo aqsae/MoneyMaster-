@@ -1,16 +1,22 @@
 <?php
+// start the session so we can read errors sent back from process_eoi.php
 session_start();
+// gets the list of states and skills
 require_once "eoi_options.php";
 
+// grab any errors and old answers from the last submit, or empty lists if there are none
 $errors = isset($_SESSION["eoi_errors"]) ? $_SESSION["eoi_errors"] : array();
 $old = isset($_SESSION["eoi_old"]) ? $_SESSION["eoi_old"] : array();
+// clear them so they don't show up again on refresh
 unset($_SESSION["eoi_errors"], $_SESSION["eoi_old"]);
 
+// puts back what the user typed before, made safe to show on the page
 function old_value($old, $field) {
     $value = isset($old[$field]) ? $old[$field] : "";
     return htmlspecialchars($value, ENT_QUOTES, "UTF-8", false);
 }
 
+// shows the red error message under a field if that field had an error
 function show_error($errors, $field)
 {
     if (isset($errors[$field])) {
@@ -20,6 +26,7 @@ function show_error($errors, $field)
     }
 }
 
+// fill in the job ref: from their last attempt, or from the jobs page link (apply.php?ref=...), or leave it empty
 if (isset($old["jobref"])) {
     $selected_ref = $old["jobref"];
 } elseif (isset($_GET["ref"])) {
@@ -28,6 +35,7 @@ if (isset($old["jobref"])) {
     $selected_ref = "";
 }
 
+// the skills they ticked last time, so they stay ticked
 $old_skills = isset($old["skills"]) ? $old["skills"] : array();
 ?>
 <!DOCTYPE html>
@@ -74,8 +82,10 @@ $old_skills = isset($old["skills"]) ? $old["skills"] : array();
         <p id="form-intro">Apply below to join our team.</p>
 
         <section>
+            <!-- sends the form to process_eoi.php to be checked and saved -->
             <form action="process_eoi.php" method="POST">
 
+                <!-- red box listing every error, only shows if there are any -->
                 <?php if (count($errors) > 0) { ?>
                     <div class="form-errors">
                         <p><strong>Please fix the following:</strong></p>
@@ -87,6 +97,7 @@ $old_skills = isset($old["skills"]) ? $old["skills"] : array();
                     </div>
                 <?php } ?>
 
+                <!-- job ref is pre-filled if they came from the jobs page -->
                 <h2>Job Details</h2>
 
                 <p>
@@ -97,6 +108,7 @@ $old_skills = isset($old["skills"]) ? $old["skills"] : array();
                     <?php show_error($errors, "jobref"); ?>
                 </p>
 
+                <!-- each field puts back the old answer and shows its own error -->
                 <h2>Personal Details</h2>
 
                 <p>
@@ -117,6 +129,7 @@ $old_skills = isset($old["skills"]) ? $old["skills"] : array();
                     <?php show_error($errors, "dob"); ?>
                 </p>
 
+                <!-- keeps the right gender ticked if they had errors -->
                 <fieldset>
                     <legend>Gender</legend>
                     <p>
@@ -151,6 +164,7 @@ $old_skills = isset($old["skills"]) ? $old["skills"] : array();
 
                 <p>
                     <label for="state">State:</label>
+                    <!-- state options come from the list in eoi_options.php -->
                     <select id="state" name="state" required>
                         <option value="" disabled <?php if (old_value($old, "state") == "") echo "selected"; ?>>Select a state</option>
                         <?php foreach (array_keys($state_postcodes) as $state_code) { ?>
@@ -183,6 +197,7 @@ $old_skills = isset($old["skills"]) ? $old["skills"] : array();
 
                 <fieldset>
                     <legend>Skill list</legend>
+                    <!-- makes a checkbox for each skill in eoi_options.php, named skills[] so php gets them all as a list -->
                     <?php foreach ($skill_options as $skill_value => $skill_label) { ?>
                         <p>
                             <input type="checkbox" id="skill-<?php echo $skill_value; ?>" name="skills[]" value="<?php echo $skill_value; ?>"
