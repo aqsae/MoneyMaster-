@@ -1,6 +1,7 @@
 <?php
 // only logged-in managers can see this page
 session_start();
+// no username in the session means they never logged in, so send them to login.php
 if (!isset($_SESSION["username"])) {
     header("Location: login.php");
     exit();
@@ -11,15 +12,16 @@ function e($value) {
     return htmlspecialchars((string)$value, ENT_QUOTES, "UTF-8", false);
 }
 
+// connect using the details in settings.php
 require_once "settings.php";
-mysqli_report(MYSQLI_REPORT_OFF);
+mysqli_report(MYSQLI_REPORT_OFF); // turn off mysqli crashing so we can show our own error messages
 $conn = @mysqli_connect($host, $user, $pwd, $sql_db);
 
-$message = "";
-$db_error = "";
-$results = array();
+$message = "";       // shows after a delete or status change
+$db_error = "";      // shows if something goes wrong with the database
+$results = array();  // all the EOI rows we'll put in the table
 
-// allowed sort fields (column name => label) - column names can't use prepared statement placeholders
+// allowed sort fields (column name => label) column names can't use prepared statement placeholders
 $sort_fields = array(
     "EOInumber"      => "EOI number",
     "job_ref"        => "Job reference",
@@ -37,37 +39,41 @@ $sort_fields = array(
     "other_skills"   => "Other skills",
     "status"         => "Status"
 );
-$statuses = array("New", "Current", "Final");
+$statuses = array("New", "Current", "Final"); // only statuses allowed, so no one can edit the values and input a fake one
 
 // search values from the form (kept so the form remembers them)
 $search_jobref = isset($_GET["jobref"])    ? trim($_GET["jobref"])    : "";
 $search_first  = isset($_GET["firstname"]) ? trim($_GET["firstname"]) : "";
 $search_last   = isset($_GET["lastname"])  ? trim($_GET["lastname"])  : "";
+// only accept a sort column from the list above, otherwise just sort by EOI number
 $sort  = (isset($_GET["sort"]) && array_key_exists($_GET["sort"], $sort_fields)) ? $_GET["sort"] : "EOInumber";
-$order = (isset($_GET["order"]) && $_GET["order"] == "DESC") ? "DESC" : "ASC";
+$order = (isset($_GET["order"]) && $_GET["order"] == "DESC") ? "DESC" : "ASC"; // can only ever be DESC or ASC
 
 if (!$conn) {
     $db_error = "Unable to connect to the database.";
 } else {
 
     // handle changes: delete by job reference, or change a status
+    // the hidden "action" field in each form tells us which form was used
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["action"])) {
 
         if ($_POST["action"] == "delete") {
             $delete_jobref = isset($_POST["delete_jobref"]) ? trim($_POST["delete_jobref"]) : "";
 
+            // checkbox only gets sent if it's ticked, so no tick = no delete
             if (!isset($_POST["confirm_delete"])) {
                 $message = "Please tick the confirmation box to delete EOIs.";
             } elseif (!preg_match("/^[A-Za-z0-9]{6}$/", $delete_jobref)) {
                 $message = "Job reference must be exactly 6 letters or numbers.";
             } else {
+                // prepared statement so the job ref can't mess with the sql (stops sql injection)
                 $stmt = mysqli_prepare($conn, "DELETE FROM eoi WHERE job_ref = ?");
                 if (!$stmt) {
                     $message = "The EOI table does not exist yet.";
                 } else {
                     mysqli_stmt_bind_param($stmt, "s", $delete_jobref);
                     mysqli_stmt_execute($stmt);
-                    $count = mysqli_stmt_affected_rows($stmt);
+                    $count = mysqli_stmt_affected_rows($stmt); // how many EOIs actually got deleted
                     mysqli_stmt_close($stmt);
                     if ($count > 0) {
                         $message = "Deleted $count EOI(s) for job reference " . e($delete_jobref) . ".";
@@ -78,9 +84,10 @@ if (!$conn) {
             }
 
         } elseif ($_POST["action"] == "status") {
-            $eoi_id     = isset($_POST["eoi_number"]) ? (int)$_POST["eoi_number"] : 0;
+            $eoi_id     = isset($_POST["eoi_number"]) ? (int)$_POST["eoi_number"] : 0; // (int) turns anything weird into 0
             $new_status = isset($_POST["new_status"]) ? $_POST["new_status"] : "";
 
+            // make sure it's a real EOI number and the status is one of New, Current or Final
             if ($eoi_id <= 0 || !in_array($new_status, $statuses)) {
                 $message = "Invalid status change.";
             } else {
@@ -88,13 +95,14 @@ if (!$conn) {
                 if (!$stmt) {
                     $message = "The EOI table does not exist yet.";
                 } else {
-                    mysqli_stmt_bind_param($stmt, "si", $new_status, $eoi_id);
+                    mysqli_stmt_bind_param($stmt, "si", $new_status, $eoi_id); // "si" = a string then an integer
                     mysqli_stmt_execute($stmt);
                     $count = mysqli_stmt_affected_rows($stmt);
                     mysqli_stmt_close($stmt);
                     if ($count > 0) {
                         $message = "EOI $eoi_id status changed to $new_status.";
                     } else {
+                        // nothing changed, usually because it already had that status
                         $message = "EOI $eoi_id was not changed (it may already be $new_status).";
                     }
                 }
@@ -103,6 +111,7 @@ if (!$conn) {
     }
 
     // build the list query: all EOIs, or filtered by job reference and/or name
+    // each search box that's filled in adds a "?" condition, and its value goes into $params
     $sql = "SELECT * FROM eoi";
     $conditions = array();
     $types = "";
@@ -113,6 +122,7 @@ if (!$conn) {
         $types .= "s";
         $params[] = $search_jobref;
     }
+    // the % on both sides means partial matches work, e.g. "al" finds "Alice"
     if ($search_first != "") {
         $conditions[] = "first_name LIKE ?";
         $types .= "s";
@@ -127,17 +137,18 @@ if (!$conn) {
     if (count($conditions) > 0) {
         $sql .= " WHERE " . implode(" AND ", $conditions);
     }
-    $sql .= " ORDER BY $sort $order";
+    $sql .= " ORDER BY $sort $order"; // safe because both were checked against fixed lists earlier
 
     $stmt = mysqli_prepare($conn, $sql);
     if (!$stmt) {
         $db_error = "The EOI table does not exist yet. Submit an application first.";
     } else {
         if ($types != "") {
-            mysqli_stmt_bind_param($stmt, $types, ...$params);
+            mysqli_stmt_bind_param($stmt, $types, ...$params); // ... unpacks the list so each value gets passed separately
         }
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
+        // grab each matching row one at a time and add it to the results
         while ($row = mysqli_fetch_assoc($result)) {
             $results[] = $row;
         }
@@ -167,7 +178,7 @@ if (!$conn) {
 
         <div class="manage-bar">
             <span>Logged in as <strong><?php echo e($_SESSION["username"]); ?></strong></span>
-            <a href="logout.php">Log out</a>
+            <a href="logout.php">Log out</a> <?php /* logout.php wipes the session and sends them back to login */ ?>
         </div>
 
         <?php if ($message != "") { ?>
@@ -270,6 +281,7 @@ if (!$conn) {
                                     <td><?php echo e($row["skills"]); ?></td>
                                     <td><?php echo e($row["other_skills"]); ?></td>
                                     <td>
+                                        <?php /* keeps the current search in the url so you stay on the same results after updating */ ?>
                                         <form action="manage.php?<?php echo e(isset($_SERVER["QUERY_STRING"]) ? $_SERVER["QUERY_STRING"] : ""); ?>" method="POST">
                                             <input type="hidden" name="action" value="status">
                                             <input type="hidden" name="eoi_number" value="<?php echo e($row["EOInumber"]); ?>">
