@@ -64,7 +64,7 @@
          <span class="student-id">ID: 106390891</span>
         </dt>
        <dd class="member-details">
-         Developed the About page and eoi_options.php as well as proofread and edited site.
+         Developed the About page and eoi_options.php as well as proofread and edited side and presentation slides.
         </dd>
       </div>
 
