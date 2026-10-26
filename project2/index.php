@@ -22,7 +22,7 @@
 <?php include __DIR__ . '/header.inc'; ?>
 
     <div class="image-container">
-        <img src="images/thumbnail.jpg" alt="Moneymaster Preview" class="thumbnail">
+        <img src="../images/thumbnail.jpg" alt="Moneymaster Preview" class="thumbnail">
         <div class="overlay-heading">we've got you.</div>
 
 <a href="login.php" class="start">Get Started</a>
