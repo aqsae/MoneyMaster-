@@ -162,7 +162,7 @@ if (!$conn) {
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="../styles/styles.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="MoneyMaster - HR manager EOI management">
